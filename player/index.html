@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <title>SYP Player</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    </head>
+    <body>
+    
+    <p id="bar">SYP Player</p>
+    <img src="img/close.png" id="close">
+    
+    <div id="contentWin">
+            <div id="searchBox">
+                <input type="text" id="searchR" placeholder="Enter search or URL">
+                <img src="img/search.png" id="searchImg">
+            </div>
+    <div id="playerContent">
+        <div id="name">
+        <img src="img/music.png" id="thumbnail"><br>
+        <marquee behavior="scroll" direction="left">Music...</marquee>
+            <div id="desc">
+            <p>Made by ...</p>
+            <p>Likes:...</p>
+            <p>Dislikes:...</p>
+            </div>
+        </div>
+    
+        <div id="status">
+            <div id="statusP">
+            <p id="time">Time</p>
+            </div>
+        </div>
+    
+    <div id="panel">
+        <img src="img/right.png" id="btnReplay">
+        <img src="img/play.png" id="btnPlay">
+        <img src="img/left.png" id="btnNext">
+        <img src="img/browser.png" id="playBrowser">
+    </div>
+    </div>
+        <div id="more">
+        <div id="listSelect">
+            <p>Recommendations</p>
+            <p>Favorites</p>
+            <p>Playlist</p>
+        </div>
+    <div id="list">
+    </div>
+    </div>
+    
+    <script src="player.js"></script>
+    
+    </div>
+    <webview id="youtube" src="https://youtu.be/qJclmkpJbrk" style="width:0px; height:0px"></webview>
+    </body>
+</html>
