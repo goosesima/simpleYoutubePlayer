@@ -1,0 +1,19 @@
+{
+  "name": "SYP",
+  "main": "player/index.html",
+  "window": {
+    "toolbar": false,
+    "frame": false
+  },
+  "webview":{
+    "partitions": [
+        {
+        "name": "trusted",
+        "accessible_resources": [
+            "*"
+            
+        ]
+        }
+        ]
+    }
+}
