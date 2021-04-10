@@ -1,2 +1,2 @@
 #!/bin/sh
-./nw
+./nw & disown && kill -KILL $$

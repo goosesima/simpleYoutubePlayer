@@ -1,19 +1,22 @@
 {
   "name": "SYP",
   "main": "player/index.html",
+  "icon": "player/img/sypplayer.png",
   "window": {
     "toolbar": false,
     "frame": false
   },
-  "webview":{
+  "webview": {
     "partitions": [
-        {
+      {
         "name": "trusted",
         "accessible_resources": [
-            "*"
-            
+          "tabs",
+          "notifications",
+          "http://*/",
+          "https://*/"
         ]
-        }
-        ]
-    }
+      }
+    ]
+  }
 }

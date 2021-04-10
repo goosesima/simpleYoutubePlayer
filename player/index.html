@@ -4,55 +4,113 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <title>SYP Player</title>
+    <link rel="icon" type="image/png" href="img/sypplayer.png" />
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="lib/contextmenu.css">
+    <script src="browser.js" charset="utf-8"></script>
+    <script src="lib/contextmenu.js"></script>
+    <script src="lib/translationOn.js"></script>
+    <script src="lib/hinted.js"></script>
+    <script type="text/javascript">
+      hintedJS.hintText = '';
+      hintedJS.style('black-material');
+    </script>
+    <script src="lib/controlpad.js"></script>
+    <script src="lib/alert.js"></script>
+    <script src="lib/sypstorage.js"></script>
+
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        if(!isBrowser){
+          var p = document.createElement('script');
+          p.src = '../update.js';
+          document.body.appendChild(p);
+        }
+      });
+    </script>
+    <script src="lib/nwjs-ffmpeg.js"></script>
     </head>
     <body>
-    
-    <p id="bar">SYP Player</p>
-    <img src="img/close.png" id="close">
-    
+
+    <div id="windowBar">
+      <img alt="SYP Player" src="img/sypplayer.svg" id="sypplayer">
+      <img src="img/rollup.png" class="controlpad" id="hideBtn" alt="Hide">
+      <img src="img/close.png" class="controlpad" id="closeBtn" alt="Close">
+    </div>
+    <div id="loadingScreen" class="fadeSupport">
+      <div>
+        <img src="img/sypplayer.svg" alt="SYP Player">
+        <p>SYP Player by SimaKyr</p>
+      </div>
+    </div>
     <div id="contentWin">
             <div id="searchBox">
-                <input type="text" id="searchR" placeholder="Enter search or URL">
-                <img src="img/search.png" id="searchImg">
+                <input type="text" id="searchR" placeholder="Enter search query or URL" alt="Enter for example name of music">
+                <img src="img/search.png" id="searchImg" class="controlpad">
             </div>
     <div id="playerContent">
         <div id="name">
+          <div id="sliderTMusic" hint="Volume">
+              <div id="sliderMusic" hint="Volume">
+              <p id="music" hint="Volume">100%</p>
+              </div>
+          </div>
         <img src="img/music.png" id="thumbnail"><br>
         <marquee behavior="scroll" direction="left">Music...</marquee>
-            <div id="desc">
-            <p>Made by ...</p>
-            <p>Likes:...</p>
-            <p>Dislikes:...</p>
+          <div id="desc" class="divname">
+            <p alt="Channel who share music">Made by ...</p>
+            <div class="line divname">
+              <img src="img/like.png">
+              <p id="likes">Likes</p>
             </div>
-        </div>
-    
-        <div id="status">
-            <div id="statusP">
+            <div class="line divname">
+              <img src="img/dislike.png">
+              <p id="dislikes">Dislikes</p>
+            </div>
+            </div>
+          </div>
+
+        <div id="sliderT" alt="Click to change playing seconds">
+            <div id="slider">
             <p id="time">Time</p>
             </div>
         </div>
-    
+
     <div id="panel">
-        <img src="img/right.png" id="btnReplay">
-        <img src="img/play.png" id="btnPlay">
-        <img src="img/left.png" id="btnNext">
-        <img src="img/browser.png" id="playBrowser">
+        <img src="img/browser.png" id="playBrowser" class="controlpad" alt="Open in browser">
+        <img src="img/right.png" id="btnReplay" class="controlpad" alt="Play past track">
+        <img src="img/play.png" id="btnPlay" class="controlpad" alt="Pause/Play">
+        <img src="img/left.png" id="btnNext" class="controlpad" alt="Play next track">
+        <img src="img/settings.png" id="btnSettings" class="controlpad" alt="Open settings">
     </div>
     </div>
         <div id="more">
-        <div id="listSelect">
-            <p>Recommendations</p>
-            <p>Favorites</p>
-            <p>Playlist</p>
+        <!-- <div id="listSelect">
+            <p alt="Recommendations what generated using this track" class="controlpad">Recommendations</p>
+            <p alt="Favorites tracks" class="controlpad">Favorites</p>
+            <p alt="See recommendation mixs" class="controlpad">Playlist</p>
+        </div> -->
+    <div id="list" class="list"></div>
+    <div id="listSearch" class="list"></div>
+    </div>
+    <div id="settingsMenu" class="leftSettings">
+        <div>
+          <p>Settings</p>
+          <p id="installSyp" class="btn controlpad" alt="Make youtube better in browser">Install userscript</p>
+          <p id="checkupdate" class="btn controlpad">Check update</p>
+          <p id="installffmpeg" class="btn controlpad">Install ffmpeg</p>
+          <p id="versionUsing">Version: </p>
+          <span>All made by SimaKyr.
+          SYP Player icon owned by SimaKyr.
+          Icons by Icons8
+          Using jszip
+          </span>
         </div>
-    <div id="list">
+        <p id="closeSettings" class="btn controlpad" alt="Close settings">Back</p>
     </div>
-    </div>
-    
     <script src="player.js"></script>
-    
+
     </div>
-    <webview id="youtube" src="https://youtu.be/qJclmkpJbrk" style="width:0px; height:0px"></webview>
+    <webview id="youtube" src="https://youtu.be/qJclmkpJbrk" partition="trusted"></webview>
     </body>
 </html>

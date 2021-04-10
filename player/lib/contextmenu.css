@@ -1,0 +1,29 @@
+.contextMenuButton{
+  padding: 0px 10px;
+  cursor: default;
+  display: flex;
+}
+.contextMenuButton:hover{
+  background: #ddd;
+}
+.contextMenuButton img{
+  height: 16px !important;
+}
+.contextMenuButton p{
+  margin: 0;
+}
+.contextMenu{
+  border: black 1px solid;
+  position: absolute;
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  left: 10px;
+  top: 10px;
+  background: #fff;
+}
+.contextMenuSeperator{
+  margin: 1% 10%;
+  background: #000;
+  padding: 1px;
+}
