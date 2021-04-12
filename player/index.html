@@ -15,6 +15,7 @@
       hintedJS.hintText = '';
       hintedJS.style('black-material');
     </script>
+    <script src="lib/easyrp.js" charset="utf-8"></script>
     <script src="lib/controlpad.js"></script>
     <script src="lib/alert.js"></script>
     <script src="lib/sypstorage.js"></script>
@@ -23,7 +24,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         if(!isBrowser){
           var p = document.createElement('script');
-          p.src = '../update.js';
+          p.src = 'update.js';
           document.body.appendChild(p);
         }
       });

@@ -5,6 +5,7 @@ const os = require('os');
 const murl = require('url');
 const util = require('util');
 const networkInterfaces = os.networkInterfaces();
+const path = require('path');
 function getIP() {
   if(isBrowser){
     FULLADDRESS = 'https://127.0.0.1'
@@ -30,8 +31,8 @@ function getIP() {
 }
 const learnSyp = '<p>Should you check source code to discover how SYP work? You makes big errors in request</p><br><a href="https://github.com/SimaKyr/simpleYoutubePlayer">Discover source code</a>';
 var options = {
-  key: fs.readFileSync('player/server-key.pem'),
-  cert: fs.readFileSync('player/server-cert.pem'),
+  key: fs.readFileSync(path.join('player', 'userdata', 'server-key.pem')),
+  cert: fs.readFileSync(path.join('player', 'userdata', 'server-cert.pem')),
   requestCert: false,
   rejectUnauthorized: false
 };
@@ -100,7 +101,7 @@ simpleCheckFile = function(name,f){
 
 function generateInfoJSON() {
   var c = {};
-  if(vRecommendations != null){
+  if(typeof vRecommendations != 'undefined'){
     c['r'] = vRecommendations;
   }
   c['t'] = document.title.replace(' - SYP Player','');
@@ -181,7 +182,9 @@ function addToFileHDir(d) {
           if(locc[0] == '/'){
             locc = locc.substring(1);
           }
-          fileh[locc] = 'player/' + locc;
+          if(locc.indexOf('server-key.pem') == -1 && locc.indexOf('server-cert.pem') == -1 && locc.indexOf('storage.json') == -1){
+            fileh[locc] = 'player/' + locc;
+          }
       }
     });
   });
@@ -461,19 +464,21 @@ window.onceOnLoadYt = function(){
   if(p){
     setPlayPos2(p);
   }
-  var p = sypStorage.get('volume');
-  if(p){
-    setVolumeReal(p);
-  }else{
-    setVolumeReal(100);
-  }
   setTimeout(function(){
     loadingScreen.classList.add('fadeOut');
   }, 1300);
+  easyrp.init();
   window.onceOnLoadYt = function(){};
 }
 document.getElementById('youtube').onloadstop = function(){
+    // easyrp.update();
     window.onceOnLoadYt();
+    var p = sypStorage.get('volume');
+    if(typeof p == 'number'){
+      setVolumeReal(p);
+    }else{
+      setVolumeReal(100);
+    }
     window.canUse = 0;
     var url = yt.src;
     clearList();
@@ -584,10 +589,12 @@ document.getElementById('youtube').onloadstop = function(){
         yt.executeScript({
                 code: `document.title`
             }, result => {
-              if(result[0]){
-                this.title = result[0];
-              }else{
-                this.title = yt.title
+              if(result){
+                if(result[0]){
+                  this.title = result[0];
+                }else{
+                  this.title = yt.title
+                }
               }
               const title = this.title.replace(' - YouTube','')
               document.getElementById('name').getElementsByTagName('marquee')[0].innerText = title;
@@ -790,6 +797,10 @@ window.percentesVolume = 0;
 function setVolumeReal(p) {
   if(isBrowser){
     performActionRemote('setvolume&i=' + String(Math.floor(p)));
+  }else{
+    if(sypStorage.get('volume') != p){
+      sypStorage.set('volume', p);
+    }
   }
   window.percentesVolume = p;
   setVolume(p);
@@ -1095,7 +1106,11 @@ setInterval(function(){
         yt.executeScript({
             code: uuid + '.getPause();'
           }, result => {
-            window.playing = !result[0];
+            try {
+              window.playing = !result[0];
+            } catch {
+
+            }
         });
         execCode(uuid + '.goOutDialog()');
       if(playerOnline){
@@ -1106,7 +1121,11 @@ setInterval(function(){
         yt.executeScript({
             code: nve + '[0].currentTime + "|" + ' + nve + '[0].duration;'
           }, result => {
-            updateTime(result[0]);
+            try {
+              updateTime(result[0]);
+            } catch {
+
+            }
           });
         }
       }

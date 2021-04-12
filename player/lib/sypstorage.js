@@ -1,7 +1,6 @@
 window.sypStorage = {};
 window.sypJSON = {};
-
-sypStorage.storageFile = 'player/storage.json';
+sypStorage.storageFile = require('path').join('player', 'userdata', 'storage.json');
 
 function simpleReadFileSync(filePath)
 {
