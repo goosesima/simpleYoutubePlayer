@@ -31,6 +31,10 @@ if(typeof require == 'undefined'){
     }
     return get;
   }
+  process = {};
+  process.cwd = function () {
+    return 'there is may be path, but not this time!'
+  }
   window.require = function (e) {
     if(e == 'os') {
       var os = {};
@@ -38,6 +42,25 @@ if(typeof require == 'undefined'){
         return {'Loopback Pseudo-Interface':[{'address': '127.0.0.1', 'internal': true, 'type': 'IPv4'}], 'Ethernet':[{'address': '192.255.255.255', 'internal': true, 'type': 'IPv4'}]}
       }
       return os;
+    }
+    if(e == 'child_process'){
+      var child_process = {};
+      child_process.execFile = 'what?';
+      return child_process;
+    }
+    if(e == 'path'){
+      var path = {};
+      path.join = function () {
+        var args = arguments;
+        var out = '';
+        var i = 0;
+        while(i != args.length) {
+          out += args[i] + '/';
+          i++;
+        }
+        return out;
+      }
+      return path;
     }
     if(e == 'fs'){
       var fs = {};

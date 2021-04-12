@@ -97,14 +97,20 @@
     <div id="settingsMenu" class="leftSettings">
         <div>
           <p>Settings</p>
-          <p id="installSyp" class="btn controlpad" alt="Make youtube better in browser">Install userscript</p>
+          <p id="installSyp" class="btn controlpad" alt="Make youtube better in browser">Install userscript or open SYP Remote</p>
           <p id="checkupdate" class="btn controlpad">Check update</p>
           <p id="installffmpeg" class="btn controlpad">Install ffmpeg</p>
-          <p id="versionUsing">Version: </p>
-          <span>All made by SimaKyr.
+          <p id="changelogopen" class="btn controlpad">Open Change Log</p>
+          <b>SYP Remote port:</b>
+          <input type="number" id="sypremoteport" max="65535" min="1" value="49902" step="1" placeholder="49902" required>
+          <i>*Port changes only on restart SYP Player. Don't forget to reinstall userscript.</i>
+          <br>
+          <b id="versionUsing">Version: </b>
+          <span>
+          All made by SimaKyr.
           SYP Player icon owned by SimaKyr.
           Icons by Icons8
-          Using jszip
+          See package.json to know what libraries are using.
           </span>
         </div>
         <p id="closeSettings" class="btn controlpad" alt="Close settings">Back</p>

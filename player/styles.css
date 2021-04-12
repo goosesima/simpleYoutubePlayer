@@ -117,7 +117,7 @@ body{
     text-align:center;
     display: -webkit-box;
 }
-p, a, marquee{
+p, a, marquee, b, i, input, span, .btn{
  font-family: 'Roboto', sans-serif;
 }
 #panel img{
@@ -133,7 +133,9 @@ p, a, marquee{
 }
 input{
     border-radius: 20px;
-    border-style: solid;
+    border: solid #42a5f5 2px;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 img, p, div {
         user-select: none;
@@ -299,10 +301,11 @@ img, p, div {
 .btn{
   border-radius: 100px;
   padding: 10px;
-  background: #42a5f5;
+  background: linear-gradient(90deg, rgba(70,93,255,1) 0%, rgba(159,0,255,1) 100%);
   color: #fff;
   transition: background .2s, color .2s;
   cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 .btn:hover{
   background: #fff !important;
@@ -318,10 +321,10 @@ img, p, div {
   background: #1a237e;
   z-index: 1;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-#settingsMenu div{
   overflow-y: scroll !important;
   overflow-x: hidden !important;
+}
+#settingsMenu div{
   margin-left: 2%;
   color: #fff;
 }

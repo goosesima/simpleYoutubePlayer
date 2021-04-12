@@ -1,0 +1,55 @@
+===================
+SYP Player Changelog
+===================
+-------------------
+Join official Discord(and you ideas be real):
+https://discord.com/invite/TFSfUd9je4
+-------------------
+Version 1:
+- First release.
+Version 2 [10.04.2021]:
+- idk what's totally changed.
+Version 3 [12.04.2021]:
+- Now private data in special folder - "userdata"
+- Alpha Discord Rich Presence - Using EasyRP
+- Update file is now working.
+- Changed update.js - now using Axios.
+- update.js is now inside player folder.
+- update.js is now can work without NW.JS(use Node.js) which makes possible to fix broken updates.
+Version 4 [12.04.2021]:
+- Some secure problems and optimization.
+- Fixed SYP Remote.
+- Version now showed correctly.
+- Changelog: a worthy opponent.
+- Button what show changelog.
+- You now can change port for SYP Player Remote in Settings.
+- Updated README.md
+
+TODO:
+- Change IP to custom or userscript detect IP(?).
+- "Native" ngrok support.
+- Firebase for userdata and SYP Remote.
+- Special SYP links for open any music, (even on PC)?
+- Public and private SYP Remote mode to listen you music, when on PC listen other.
+- Make possible headless.
+- Remove webview.
+- Commentary show.
+- Playlist support with own format for save.
+- Share button, what copies link(WITH ADS of SYP!!).
+- Fully working SYP Player Remote.
+- Download button for music.
+- Open source soundpad?
+- Chromecast support.
+- Script what install NW.JS and SYP Player.
+- Offline files import.
+- Visualization music with bars?
+- SYP Remote: vibration phone support.
+- Android application.
+- Discord AD in app.
+- Seekbar left - right.
+- Soundcloud or bandcamp support.
+- Possible make bot with 3 clicks what can listen to you great voice and play music to channel?
+- TTS and control by speaking.
+- Possible to create live music stream.
+- Mini player look.
+- Use s##### to make ###### and p#### ### to #### for ###### ???. (It's spoiler)

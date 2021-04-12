@@ -1,6 +1,6 @@
 {
   "name": "SYP",
-  "version": "3",
+  "version": "4",
   "main": "player/index.html",
   "icon": "player/img/sypplayer.png",
   "window": {
@@ -11,12 +11,7 @@
     "partitions": [
       {
         "name": "trusted",
-        "accessible_resources": [
-          "tabs",
-          "notifications",
-          "http://*/",
-          "https://*/"
-        ]
+        "accessible_resources": ["*"]
       }
     ]
   },

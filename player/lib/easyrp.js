@@ -48,9 +48,11 @@ easyrp.stop = function () {
 }
 easyrp.online = false;
 easyrp.update = function () {
-  const config = { encoding: "utf8", flag: "w"}
-  fs.writeFile(easyrp.cfgfile, easyrp.autoconfig(), function (e, data) {
-  });
+  if(!isBrowser){
+    const config = { encoding: "utf8", flag: "w"}
+    fs.writeFile(easyrp.cfgfile, easyrp.autoconfig(), function (e, data) {
+    });
+  }
 }
 easyrp.config = function (details, state, hold) {
   const time = easyrp.timestamp();
@@ -103,13 +105,15 @@ easyrp.executable = function () {
 }
 
 easyrp.init = function () {
-  easyrp.update();
-  easyrp.start();
-  setInterval(function () {
-    try {
-      easyrp.update();
-    } catch (e) {
+  if(!isBrowser){
+    easyrp.update();
+    easyrp.start();
+    setInterval(function () {
+      try {
+        easyrp.update();
+      } catch (e) {
 
-    }
-  }, 400);
+      }
+    }, 400);
+  }
 }

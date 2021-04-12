@@ -38,6 +38,9 @@ var options = {
 };
 
 var portServer = 49902;
+if(typeof sypStorage.get('sypport') != 'undefined'){
+  portServer = Number(sypStorage.get('sypport'));
+}
 var serverAddress = 'https://' + getIP() + ':' + portServer;
 nwjsffmpeg.ask();
 
@@ -182,9 +185,7 @@ function addToFileHDir(d) {
           if(locc[0] == '/'){
             locc = locc.substring(1);
           }
-          if(locc.indexOf('server-key.pem') == -1 && locc.indexOf('server-cert.pem') == -1 && locc.indexOf('storage.json') == -1){
             fileh[locc] = 'player/' + locc;
-          }
       }
     });
   });
@@ -319,7 +320,7 @@ const server = https.createServer(options, function (req, res) {
   try{
     requestListener(req, res);
   }catch(e){
-    // console.log(e);
+    console.log(e);
     res.setHeader("Content-Type", "text/plain; charset=utf-8;");
     res.write('ERROR');
     res.end();
@@ -333,7 +334,7 @@ if(!isBrowser){
 window.playerOnline = false;
 
 documentgetElementById = function(e){
-  Function(e + " = document.getElementById('" + e + "')")();
+  window[e] = document.getElementById(e);
 }
 includeIdE = function(){
   var e = document.body.getElementsByTagName("*");
@@ -423,13 +424,23 @@ window.canUse = 1;
 onload = function(){
   listSearch.style.display = 'none';
 try{
-  versionUsing.innerText += fs.readFileSync(updaterSYP.fileVersion).toString();
+  versionUsing.innerText += ' ' + JSON.parse(fs.readFileSync(updaterSYP.fileVersion).toString()).version;
 }catch(e){
   if(!isBrowser){
     versionUsing.innerText = 'Can\'t get version';
     console.warn(e);
   }
 }
+
+sypremoteport.onchange = function(){
+  const a = Number(sypremoteport.value);
+  if(a>-1 && 65536>a)
+  sypStorage.set('sypport', sypremoteport.value);
+}
+changelogopen.onclick = function () {
+  window.open('https://raw.githubusercontent.com/SimaKyr/simpleYoutubePlayer/master/player/CHANGELOG.txt');
+}
+sypremoteport.value = portServer;
 
 var cm = contextMenu.new();
 
