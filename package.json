@@ -1,22 +1,16 @@
 {
   "name": "SYP",
-  "version": "4",
+  "version": "5",
   "main": "player/index.html",
   "icon": "player/img/sypplayer.png",
   "window": {
     "toolbar": false,
     "frame": false
   },
-  "webview": {
-    "partitions": [
-      {
-        "name": "trusted",
-        "accessible_resources": ["*"]
-      }
-    ]
-  },
   "dependencies": {
     "axios": "^0.21.1",
+    "jsdom": "^16.5.3",
+    "jsmediatags": "^3.9.7",
     "jszip": "^3.6.0"
   }
 }

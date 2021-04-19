@@ -24,30 +24,54 @@ Version 4 [12.04.2021]:
 - Button what show changelog.
 - You now can change port for SYP Player Remote in Settings.
 - Updated README.md
+Version 5 [19.04.2021]:
+- Remove webview.
+  ^ Usage RAM 720MB when WEBVIEW WAS
+  ^ NOW   RAM 128MB (SYP Remote 85Mb, how is that possible?)
+  ^ NO ADS
+  ^ Music visualizer with two themes(%).
+  ^ Autoplay next track option.(%)
+  ^ DOWNLOAD music from YouTube!!!(%)
+  ^ Faster loading time!
+- Now you can drag music or video to listen(%).
+- Now version shown in bottom left corner, like "v5".(%)
+- Discord invite in app(Settings).
+- UserScript now works better, but not perfectly.
+- Now you can disable Discord RPC.(%)
+- No more alert flood when trying to connect SYP Remote.(%)
+- SYP Remote now has 3 difference splash: when you banned, when waiting to accept connection, when connection dropped.
+- SYP Remote now looks better in Chrome, no more difference in colors.
+- Redesigned some things.
+- ffmpeg installer works better, but require nodejs to run.
+- Now thumbnails shown in search and recommendations.
+- Fully working SYP Player Remote(not includes things with (%) ).
 
 TODO:
+IMPORTANT:
+- Make library what use "while" or "for"(difference because speedup) for speedup array functions.
+
 - Change IP to custom or userscript detect IP(?).
 - "Native" ngrok support.
+- Video support.
+- Optimize request package.
+- Does https use gzip to compress internet packages?
 - Firebase for userdata and SYP Remote.
 - Special SYP links for open any music, (even on PC)?
 - Public and private SYP Remote mode to listen you music, when on PC listen other.
-- Make possible headless.
-- Remove webview.
+- Make headless.
+- ElectronJS support.
 - Commentary show.
 - Playlist support with own format for save.
-- Share button, what copies link(WITH ADS of SYP!!).
-- Fully working SYP Player Remote.
-- Download button for music.
+- Share button, what copies link(WITH ADS of SYP!! Make website-redirector to YT).
 - Open source soundpad?
 - Chromecast support.
 - Script what install NW.JS and SYP Player.
 - Offline files import.
-- Visualization music with bars?
 - SYP Remote: vibration phone support.
 - Android application.
-- Discord AD in app.
-- Seekbar left - right.
+- Seekbar left - right keyboard.
 - Soundcloud or bandcamp support.
+- Spotify???
 - Possible make bot with 3 clicks what can listen to you great voice and play music to channel?
 - TTS and control by speaking.
 - Possible to create live music stream.

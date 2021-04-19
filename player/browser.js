@@ -100,16 +100,27 @@ if(typeof require == 'undefined'){
       document.getElementById(forremove[i]).remove();
       i++;
     }
-    document.getElementById('youtube').executeScript = function () {
-
-    }
   }
+  function httpGetAsync(theUrl, callback){
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function() {
+          if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+              callback(xmlHttp.responseText);
+      }
+      xmlHttp.open("GET", theUrl, true); // true for asynchronous
+      xmlHttp.send(null);
+    }
   document.addEventListener("DOMContentLoaded", ready);
     document.addEventListener('readystatechange', function () {
       if(document.readyState == 'complete'){
-        setTimeout(function () {
-          onceOnLoadYt();
-        }, 0);
+        httpGetAsync('lib/sypstorage.js', function (e) {
+          window.sypStorage = {};
+          e = e.replaceAll('module.exports', 'window.sypStorage');
+          Function(e)();
+          setTimeout(function () {
+            onceOnLoadYt();
+          }, 1000);
+        })
       }
     });
 }

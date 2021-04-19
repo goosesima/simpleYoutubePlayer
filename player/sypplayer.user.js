@@ -3,12 +3,8 @@
 // @description Helpful script for SYP Player
 // @author SimaKyr
 // @license MIT
-// @version 0
+// @version 1
 // @include https://www.youtube.com/*
+// @run-at document-end
 // ==/UserScript==
-var a=document.createElement("script");
-a.src="https://simakyr.github.io/addJS/addJS.js";
-document.body.appendChild(a);
-document.addEventListener("DOMContentLoaded", function () {
-  add.JS('${FULLADDRESS}/sypscript');
-});
+var a=document.createElement("script");a.src="${FULLADDRESS}/sypscript";document.body.appendChild(a)

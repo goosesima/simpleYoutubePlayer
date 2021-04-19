@@ -1,15 +1,12 @@
-window.sypStorage = {};
-window.sypJSON = {};
-sypStorage.storageFile = require('path').join('player', 'userdata', 'storage.json');
-
-function simpleReadFileSync(filePath)
-{
-    var options = {encoding:'utf-8', flag:'r'};
-    var buffer = fs.readFileSync(filePath, options);
-    return buffer;
+var fs = require('fs');
+module.exports.path = require('path');
+var sypJSON = {};
+var isNWJS = false;
+var isBrowser = true;
+if(typeof nw.App != 'undefined'){
+  isBrowser = false;
 }
-
-sypJSON.set = function(content, name, value){
+sypJSON.set = (content, name, value) => {
   var p;
   try{
     p = JSON.parse(content);
@@ -17,66 +14,93 @@ sypJSON.set = function(content, name, value){
   p[name] = value;
   return JSON.stringify(p);
 }
-sypJSON.get = function(content, name){
+sypJSON.get = (content, name) => {
   try{
     return JSON.parse(content)[name];
   }catch{ p = {}; }
 }
-sypJSON.getLength = function(content){
+sypJSON.getLength = (content) => {
   try{
     return Number(Object.keys(JSON.parse(content)).length)
   }catch{
     return 0;
   }
 }
-
-sypStorage.getLength = function(){
-  sypStorage.generate()
-  try{
-    return Number(sypJSON.getLength(simpleReadFileSync(sypStorage.storageFile)));
-  }catch(e){ sypStorage.checkPerrmision(e, 'read'); }
+if(typeof window != 'undefined'){
+  isNWJS = true;
+}
+var storageFile;
+if(isNWJS){
+  storageFile = module.exports.path.join('player', 'userdata', 'storage.json');
+  if(isBrowser){
+    storageFile = btoa(storageFile);
+  }
+}else{
+  storageFile = module.exports.path.join('..', 'userdata', 'storage.json');
 }
 
-sypStorage.checkPerrmision = function(e, what){
-  console.error('Error ' + what + ' to: ' + sypStorage.storageFile + '\nCheck please permission to access this file.');
+module.exports.simpleReadFileSync = function(filePath){
+  if(isBrowser){
+    return localStorage[filePath];
+  }else{
+    var options = {encoding:'utf-8', flag:'r'};
+    var buffer = fs.readFileSync(filePath, options);
+    return buffer;
+  }
+}
+module.exports.getLength = function(){
+  module.exports.generate()
+  try{
+    return Number(sypJSON.getLength(module.exports.simpleReadFileSync(storageFile)));
+  }catch(e){ module.exports.checkPermission(e, 'read'); }
+}
+module.exports.checkPermission = function(e, what){
+  console.error('Error ' + what + ' to: ' + storageFile + '\nCheck please permission to access module.exports file.');
   console.error(e);
 }
-
-sypStorage.generate = function(onend){
+module.exports.generate = function(onend){
   try{
-    if(!fs.existsSync(sypStorage.storageFile)){
-      fs.writeFileSync(sypStorage.storageFile,'{}');
+    if(isBrowser){
+      if(typeof localStorage[storageFile] == 'undefined'){
+        localStorage[storageFile] = '{}';
+      }
+    }else{
+      if(!fs.existsSync(storageFile)){
+        fs.writeFileSync(storageFile,'{}');
+      }
     }
-  }catch(e){ sypStorage.checkPerrmision(e, 'write'); }
+  }catch(e){ module.exports.checkPermission(e, 'write'); }
   if(onend) onend();
 }
-
-sypStorage.generate();
-
-sypStorage.set = function(name, value){
-  sypStorage.generate(function(){
+module.exports.set = function(name, value){
+  module.exports.generate(function(){
   var p;
   try{
-    p = simpleReadFileSync(sypStorage.storageFile);
-  }catch(e){ sypStorage.checkPerrmision(e, 'read'); }
+    p = module.exports.simpleReadFileSync(storageFile);
+  }catch(e){ module.exports.checkPermission(e, 'read'); }
   try{ p = sypJSON.set(p, name, value); }catch{}
   try{
-    fs.writeFileSync(sypStorage.storageFile, p);
-  }catch(e){ sypStorage.checkPerrmision(e, 'write'); }
+    if(isBrowser){
+      localStorage[storageFile] = p;
+    }else{
+      fs.writeFileSync(storageFile, p);
+    }
+  }catch(e){ module.exports.checkPermission(e, 'write'); }
   });
 }
-sypStorage.get = function(name){
-  sypStorage.generate();
+module.exports.get = function(name){
+  module.exports.generate();
   try{
-    return sypJSON.get(simpleReadFileSync(sypStorage.storageFile), name);
-  }catch(e){ sypStorage.checkPerrmision(e, 'read'); }
+    return sypJSON.get(module.exports.simpleReadFileSync(storageFile), name);
+  }catch(e){ module.exports.checkPermission(e, 'read'); }
 }
-sypStorage.get2 = function(namejsonfile, name){
-  return sypJSON.get(sypStorage.get(namejsonfile), name);
+module.exports.get2 = function(namejsonfile, name){
+  return sypJSON.get(module.exports.get(namejsonfile), name);
 }
-sypStorage.set2 = function(namejsonfile, name, value){
-  sypStorage.set(namejsonfile,sypJSON.set(sypStorage.get(namejsonfile),name,value));
+module.exports.set2 = function(namejsonfile, name, value){
+  module.exports.set(namejsonfile, sypJSON.set(module.exports.get(namejsonfile), name, value));
 }
-sypStorage.getLength2 = function(namejsonfile){
-  return Number(sypJSON.getLength(sypStorage.get(namejsonfile)));
+module.exports.getLength2 = function(namejsonfile){
+  return Number(sypJSON.getLength(module.exports.get(namejsonfile)));
 }
+module.exports.generate();

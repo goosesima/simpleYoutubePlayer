@@ -1,4 +1,13 @@
-window.nwjsffmpeg = {};
+nwjsffmpeg = {};
+nwjsffmpeg.fs = require('fs');
+nwjsffmpeg.axios = require('axios');
+nwjsffmpeg.JSZip = require('jszip');
+if(typeof window == 'undefined'){
+  nwjsffmpeg.isNWJS = false;
+  nwjsffmpeg.sypStorage = require('./sypstorage.js');
+}else{
+  nwjsffmpeg.isNWJS = true;
+}
 
 nwjsffmpeg._version = '0.50.3';
 
@@ -38,40 +47,30 @@ nwjsffmpeg._getDownloadName = function(vers){
 
 nwjsffmpeg.install = function(og){
   const fileUrl = nwjsffmpeg._getDownloadName(nwjsffmpeg._version);
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', fileUrl, true);
-  xhr.responseType = 'blob';
-  xhr.onload = function(e) {
-    if(this.status == 200) {
-      alert('Download succesfully (nwjs-ffmpeg)', true);
-      var zip = new JSZip();
-      zip.loadAsync(this.response).then(function(zip){ /* Load zip */
-        try{
-            function k(){
-              sypStorage.set('installed_ffmpeg', true);
-              if(typeof og != 'undefined') og();
-            }
-            var nameFile = Object.keys(zip.files)[0];
-            var dir = './lib';
-
-            if (!fs.existsSync(dir)){
-                fs.mkdirSync(dir);
-            }
-            var wstream = fs.createWriteStream('./lib/' + nameFile);
-            var stream = zip.files[nameFile].nodeStream().pipe(wstream);
-            stream.on('finish', function () {
-              // fs.copyFileSync('tmp-' + nameFile, 'lib/' + nameFile);
-              // fs.unlinkSync('tmp-' + nameFile);
-              k();
-            });
-          }
-          catch(e){ console.warn('Error install nwjs-ffmpeg!\n' + e); }
-      });
-      }
-    }
-  if(fileUrl){
-    xhr.send();
+  if(typeof fileUrl == 'undefined'){
+    return undefined;
   }
+  nwjsffmpeg.axios.get(fileUrl, { responseType: 'arraybuffer' }).then(function (e) {
+    console.log('Download succesfully (nwjs-ffmpeg)', true);
+    var zip = new nwjsffmpeg.JSZip();
+    zip.loadAsync(e.data).then(function(zip){ /* Load zip */
+      try{
+          function k(){
+            sypStorage.set('installed_ffmpeg', true);
+            if(typeof og != 'undefined') og();
+          }
+          var dir = '../../'
+          var nameFile = Object.keys(zip.files)[0];
+          var wstream = nwjsffmpeg.fs.createWriteStream(dir + nameFile);
+          var writer = zip.files[nameFile].nodeStream();
+          writer.on('finish', function () {
+            k();
+          });
+          writer.pipe(wstream);
+        }
+        catch(e){ console.warn('Error install nwjs-ffmpeg!\n' + e); }
+    });
+  });
 }
 
 nwjsffmpeg.ask = function(){
@@ -82,15 +81,19 @@ nwjsffmpeg.ask = function(){
   }
   if(!sypStorage.get('installed_ffmpeg')){
     if(!sypStorage.get('dont_ask_installed_ffmpeg')){
-      confirm('NW.JS not includes with propietary FFmpeg\nFFmpeg allow you play 99% video/music codecs\nDownload FFmpeg? ~5Mb',function(e){
+      confirm('NW.JS not includes with propietary FFmpeg\nFFmpeg allow you play 99% video/music codecs\nYou need run nwjs-ffmpeg.js using nodejs',function(e){
         if(e){
-          nwjsffmpeg.install(function(){
-              confirm('FFmpeg installed. Reload app?',function(e){if(e){updaterSYP.reloadApp();}});
-            });
+          alert('Open command-line in "player/lib" folder and write "node ./nwjs-ffmpeg.js" and wait.')
         }else{
           confirm('If you need this go to Settings.\nDon\'t ask?',function(e){if(e){sypStorage.set('dont_ask_installed_ffmpeg', true)}});
         }
       });
     }
   }
+}
+
+if(!nwjsffmpeg.isNWJS){
+  nwjsffmpeg.install(function(){
+      console.log('FFmpeg installed. You need need reload SYP Player!')
+  });
 }

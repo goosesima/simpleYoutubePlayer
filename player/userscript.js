@@ -1,16 +1,20 @@
+//add.js
+"undefined"==typeof add&&(window.add={}),add.help=function(){console.clear();var e=function(e){console.log(e)};return e("What is this addJS?\n  addJS - this is a script what make add CSS, JS simpler to pages"),e('How to use?\n  add.JS("function or URL to JS file","After load do somethings");\n  add.CSS("styles or URL to CSS file","After load do somethings");\n    Note: You can use one argument'),e('How to connect addJS?\n\nvar a=document.createElement("script");a.src="https://simakyr.github.io/addJS/addJS.js";document.body.appendChild(a)'),""},add.detectUrl=function(e){var t=document.createElement("a");return t.href=e,e==t.href},add.JS=function(e,t){var d=document.createElement("script");add.detectUrl(e)?d.src=e:d.innerHTML=e,"function"==typeof t&&(d.onload=t),document.getElementsByTagName("body")[0].appendChild(d)},add.CSS=function(e,t){var d;add.detectUrl(e)?((d=document.createElement("link")).rel="stylesheet",d.href=e):(d=document.createElement("style")).innerHTML=e,"function"==typeof t&&(d.onload=t),document.getElementsByTagName("body")[0].appendChild(d)};
+//userscript.js
 add.CSS(`
   #sypplayeropen:hover{
     background:#aaa;
   }
   #sypplayeropen{
-    background: #fff;
     color: #000;
+    border-radius: 50px !important;
     padding: 5px 16px 8px 16px;
     border-radius: 5px;
     background-repeat: no-repeat !important;
     background-image: url(` + '${FULLADDRESS}' + `/favicon.ico) !important;
     display: inline;
     cursor: pointer !important;
+    transition: .3s background;
     background-size: 32px !important;
   }
   `);

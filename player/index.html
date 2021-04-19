@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" type="text/css" href="lib/contextmenu.css">
     <script src="browser.js" charset="utf-8"></script>
+    <script src="ytparser.js" charset="utf-8"></script>
     <script src="lib/contextmenu.js"></script>
     <script src="lib/translationOn.js"></script>
     <script src="lib/hinted.js"></script>
@@ -18,8 +19,7 @@
     <script src="lib/easyrp.js" charset="utf-8"></script>
     <script src="lib/controlpad.js"></script>
     <script src="lib/alert.js"></script>
-    <script src="lib/sypstorage.js"></script>
-
+    <script src="lib/visualizer.js" charset="utf-8"></script>
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", function () {
         if(!isBrowser){
@@ -35,6 +35,7 @@
 
     <div id="windowBar">
       <img alt="SYP Player" src="img/sypplayer.svg" id="sypplayer">
+      <b id="windowtitle">SYP Player</b>
       <img src="img/rollup.png" class="controlpad" id="hideBtn" alt="Hide">
       <img src="img/close.png" class="controlpad" id="closeBtn" alt="Close">
     </div>
@@ -42,9 +43,11 @@
       <div>
         <img src="img/sypplayer.svg" alt="SYP Player">
         <p>SYP Player by SimaKyr</p>
+        <p id="splashinfo"></p>
       </div>
     </div>
     <div id="contentWin">
+      <canvas id="canvas" width="256" height="256"></canvas>
             <div id="searchBox">
                 <input type="text" id="searchR" placeholder="Enter search query or URL" alt="Enter for example name of music">
                 <img src="img/search.png" id="searchImg" class="controlpad">
@@ -57,9 +60,9 @@
               </div>
           </div>
         <img src="img/music.png" id="thumbnail"><br>
-        <marquee behavior="scroll" direction="left">Music...</marquee>
+        <marquee behavior="scroll" direction="left" id="namemedia">Music...</marquee>
           <div id="desc" class="divname">
-            <p alt="Channel who share music">Made by ...</p>
+            <p alt="Channel who share music" id="madeby">Made by ...</p>
             <div class="line divname">
               <img src="img/like.png">
               <p id="likes">Likes</p>
@@ -83,6 +86,9 @@
         <img src="img/play.png" id="btnPlay" class="controlpad" alt="Pause/Play">
         <img src="img/left.png" id="btnNext" class="controlpad" alt="Play next track">
         <img src="img/settings.png" id="btnSettings" class="controlpad" alt="Open settings">
+        <img src="img/download.png" id="btnDownload" class="controlpad" alt="Download">
+        <audio id="futureplayer" crossorigin="anonymous">
+        </audio>
     </div>
     </div>
         <div id="more">
@@ -94,6 +100,9 @@
     <div id="list" class="list"></div>
     <div id="listSearch" class="list"></div>
     </div>
+    <div class="infoline">
+      <b id="versionUsing">https://is.gd/sypplayer v</b>
+    </div>
     <div id="settingsMenu" class="leftSettings">
         <div>
           <p>Settings</p>
@@ -101,16 +110,34 @@
           <p id="checkupdate" class="btn controlpad">Check update</p>
           <p id="installffmpeg" class="btn controlpad">Install ffmpeg</p>
           <p id="changelogopen" class="btn controlpad">Open Change Log</p>
+          <b>Autoplay next track:</b>
+          <input type="checkbox" name="autoplayenabled" id="autoplayenabled" checked>
+          <br>
+          <b>Discord RPC(uses EasyRP):</b>
+          <input type="checkbox" name="discordrpc" id="discordrpc" checked>
+          <br>
           <b>SYP Remote port:</b>
           <input type="number" id="sypremoteport" max="65535" min="1" value="49902" step="1" placeholder="49902" required>
+          <br>
           <i>*Port changes only on restart SYP Player. Don't forget to reinstall userscript.</i>
           <br>
-          <b id="versionUsing">Version: </b>
+          <b>Change audio visualizer theme:</b>
+          <select name="stylevisual" id="stylevisual">
+            <option value="sypplayer">AquamarineAndTV theme</option>
+            <option value="80s">80s theme</option>
+            <option value="disabled">Disabled</option>
+          </select>
+          <b>Powered with NW.JS:</b>
+          <img src="img/nwjs.png" alt="Powered with NW.JS" id="nwjsbutton" class="ads">
+          <br>
+          <b>Official Discord server:</b>
+          <img src="img/discord.png" alt="Open Discord server" id="discordbutton" class="ads">
+          <br>
           <span>
-          All made by SimaKyr.
+          99% made by SimaKyr.
           SYP Player icon owned by SimaKyr.
           Icons by Icons8
-          See package.json to know what libraries are using.
+          Check out package.json to know what libraries are using.
           </span>
         </div>
         <p id="closeSettings" class="btn controlpad" alt="Close settings">Back</p>
@@ -118,6 +145,5 @@
     <script src="player.js"></script>
 
     </div>
-    <webview id="youtube" src="https://youtu.be/qJclmkpJbrk" partition="trusted"></webview>
     </body>
 </html>

@@ -13,23 +13,6 @@ easyrp.clientID = '829665429466906675';
 easyrp.cfgfile = 'player/easyrp/config.ini';
 easyrp.workingPath = process.cwd();
 
-easyrp.autoconfig = function () {
-  const madeby = 'by SimaKyr, see more in GitHub';
-  if(typeof generateInfoJSON == 'function'){
-    var url = '???';
-    if(typeof yt == 'object'){
-      if(typeof yt.src == 'string'){
-        url = yt.src;
-      }
-    }
-    url = 'youtu.be/' + new URL(yt.src).searchParams.get('v');
-    const g = JSON.parse(generateInfoJSON());
-    const title = '' + g.t + ' | ' + g.a;
-    return easyrp.config(title, url, madeby)
-  }else{
-    return easyrp.config('Intialization...', 'URL: ???', madeby);
-  }
-}
 easyrp.start = function () {
   if(!easyrp.online){
     const wrkPath = path.join(easyrp.workingPath, 'player', 'easyrp');
@@ -47,12 +30,31 @@ easyrp.stop = function () {
   }
 }
 easyrp.online = false;
-easyrp.update = function () {
-  if(!isBrowser){
-    const config = { encoding: "utf8", flag: "w"}
-    fs.writeFile(easyrp.cfgfile, easyrp.autoconfig(), function (e, data) {
-    });
-  }
+easyrp.update = async function () {
+  let promise = new Promise((resolve, reject) => {
+    if(!isBrowser){
+      const config = { encoding: "utf8", flag: "w"};
+      const madeby = 'by SimaKyr, see more in GitHub';
+      if(typeof generateInfoJSON == 'function'){
+        var url = currectWEBPAGE;
+        try{
+          url = 'youtu.be/' + new URL(currectWEBPAGE).searchParams.get('v');
+        }catch{
+
+        }
+        generateInfoJSON().then(function (e) {
+          const g = JSON.parse(e);
+          const title = '' + g.t + ' | ' + g.a;
+          return easyrp.config(title, url, madeby)
+        });
+      }else{
+        return easyrp.config('Intialization...', 'URL: ???', madeby);
+      }
+    }
+  }).catch(function () {
+      resolve('undefined');
+  });
+  return await promise;
 }
 easyrp.config = function (details, state, hold) {
   const time = easyrp.timestamp();
