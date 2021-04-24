@@ -45,15 +45,26 @@ Version 5 [19.04.2021]:
 - ffmpeg installer works better, but require nodejs to run.
 - Now thumbnails shown in search and recommendations.
 - Fully working SYP Player Remote(not includes things with (%) ).
+Version 6 [24.04.2021]:
+- Title bar looks better.
+- Discord RPC fixed.
+- Now you can hide alert about connection.
+- New icons.
+- Redesigned status bar.
+- Fixed volume bar visual problems in SYP Remote.
+- Fixed YouTube getting url audia, now always audio works.
+- Now you can change audio quality.
+- Optimized SYP Remote package for mobile internet.
+- Made library what selects "while" or "for" for speedup array functions and other.
+- Fix Firefox seekbar control via mouse.
+- Feedback via vibration on mobile devices.
+- Fixed local file accept.
+- UserScript now fully working.
 
 TODO:
-IMPORTANT:
-- Make library what use "while" or "for"(difference because speedup) for speedup array functions.
-
 - Change IP to custom or userscript detect IP(?).
 - "Native" ngrok support.
 - Video support.
-- Optimize request package.
 - Does https use gzip to compress internet packages?
 - Firebase for userdata and SYP Remote.
 - Special SYP links for open any music, (even on PC)?
@@ -61,17 +72,18 @@ IMPORTANT:
 - Make headless.
 - ElectronJS support.
 - Commentary show.
+- WebSocket support for SYP Remote.
 - Playlist support with own format for save.
 - Share button, what copies link(WITH ADS of SYP!! Make website-redirector to YT).
 - Open source soundpad?
 - Chromecast support.
 - Script what install NW.JS and SYP Player.
 - Offline files import.
-- SYP Remote: vibration phone support.
 - Android application.
 - Seekbar left - right keyboard.
 - Soundcloud or bandcamp support.
 - Spotify???
+- See how many views.
 - Possible make bot with 3 clicks what can listen to you great voice and play music to channel?
 - TTS and control by speaking.
 - Possible to create live music stream.

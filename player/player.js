@@ -12,7 +12,6 @@ var jsmediatags = require("jsmediatags");
 var clientWantConnect = [];
 
 var workingpath;
-// console.log('https://is.gd/sypplayer');
 function getIP() {
   if(isBrowser){
     FULLADDRESS = 'https://127.0.0.1'
@@ -21,18 +20,17 @@ function getIP() {
     var keys = Object.keys(networkInterfaces);
     var i = 0;
     var addr = [];
-    while(keys.length != i){
-        var t = networkInterfaces[keys[i]];
-        if(t.length == 2){
-            t = t[1];
-        }else{
-            t = t[0];
-        }
-        if((t.address.startsWith('192.') && !t.address.endsWith('.1') && !t.internal) /*|| (t.address.startsWith('127.') && t.internal)*/){
-             addr.push(t.address);
-        }
-        i++;
-    }
+    pf.repeat(keys, function(i){
+      var t = networkInterfaces[keys[i]];
+      if(t.length == 2){
+          t = t[1];
+      }else{
+          t = t[0];
+      }
+      if((t.address.startsWith('192.') && !t.address.endsWith('.1') && !t.internal) /*|| (t.address.startsWith('127.') && t.internal)*/){
+           addr.push(t.address);
+      }
+    })
     return addr[0];
   }
 }
@@ -77,7 +75,7 @@ function httpGetAsync(theUrl, callback)
 function advancedList(list, data) {
   if(list){
     var i = 0;
-    while(i != data.length){
+    pf.repeat(data, function (i) {
       var div = document.createElement('div');
       div.classList.add('div-adl');
       if(data[i].img){
@@ -96,17 +94,20 @@ function advancedList(list, data) {
       if(data[i].text){
         var z = 0;
         const n = data[i].text.split('\n');
-        while(z != n.length){
+        pf.repeat(n, function (z) {
           var text = document.createElement('p');
           text.innerText = n[z];
           text.classList.add('text-adl');
           div2.appendChild(text);
-          z++;
-        }
+        });
+      }
+      if(data[i].selected){
+        div.classList.add('selected-adl');
       }
       if(data[i].click){
         const n = data[i].click;
         div.onclick = n;
+        vibrationPhone();
       }else{
         if(data[i].url){
           const n = data[i].url;
@@ -118,13 +119,13 @@ function advancedList(list, data) {
                 performActionRemote('', u.searchParams.get('v'));
               }
             }
+            vibrationPhone();
           };
         }
       }
       div.appendChild(div2);
       list.appendChild(div);
-      i++;
-    }
+    });
     window.onresize();
     list.scroll(0, 0);
   }
@@ -143,6 +144,7 @@ function simpleReadFile(filePath, callback){
 
 installffmpeg.onclick = function(){
   alert('Run (you need nodejs installed)"node player/lib/nwjs-ffmpeg.js"')
+  vibrationPhone();
 }
 
 createFileIfNotExist = function(fn){try{if(!fs.existsSync(fn)){simpleWriteFile(fn,'')}}catch(e){}}
@@ -191,7 +193,7 @@ function importInfoJSON(c) {
     advancedList(list, JSON.parse(c['r']));
   }
   document.title = c['t'] + ' - SYP Player';
-  document.getElementsByTagName('marquee')[0].innerText = c['t'];
+  namemedia.innerText = c['t'];
   dislikes.innerText = c['d'];
   likes.innerText = c['l'];
   madeby.innerText = c['a'];
@@ -268,20 +270,20 @@ const requestListener = function(req, res) {
     if(typeof fileh[req.url.substring(1)] != 'undefined'){
       sendFile(res, fileh[req.url.substring(1)]);
     }
-    if (murl.parse(serverAddress + req.url).pathname == '/sypplayer') {
+    if (murl.parse(serverAddress + req.url).pathname == '/rc') {
         const url2 = new URLSearchParams(murl.parse(serverAddress + req.url).search);
         var ipclient = String(req.connection.remoteAddress);
         if (ipclient == '::1') {
             ipclient = 'localhost';
         }
-        if (url2.get('uuid')) {
-            var uuidClient = String(url2.get('uuid'));
+        if (url2.get('d')) {
+            var uuidClient = String(url2.get('d'));
             res.setHeader('Content-Type', 'text/plain; charset=utf-8');
             if (String(sypStorage.get('uuidWhiteList')).indexOf(uuidClient) != -1) {
-                if (url2.get('open')) {
-                    setcurrectWEBPAGE('https://www.youtube.com/watch?v=' + url2.get('open'));
+                if (url2.get('o')) {
+                    setcurrectWEBPAGE('https://www.youtube.com/watch?v=' + url2.get('o'));
                 } else {
-                    var command = url2.get('command');
+                    var command = url2.get('c');
                     res.setHeader('Access-Control-Allow-Origin', '*');
                     res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
                     switch (command) {
@@ -354,9 +356,9 @@ const requestListener = function(req, res) {
                     }
                 }
             } else {
-                if (String(sypStorage.get('IPBannedList')).indexOf(ipclient) == -1 && !clientWantConnect.includes(uuidClient)) {
+              res.setHeader("Content-Type", "text/plain; charset=utf-8;");
+                if (String(sypStorage.get('IPBannedList')).indexOf(ipclient) == -1 && !clientWantConnect.includes(uuidClient) && allowsypremote.checked) {
                     // res.setHeader("UserId", 12);
-                    res.setHeader("Content-Type", "text/plain; charset=utf-8;");
                     res.write('UUID');
                     res.end();
                     clientWantConnect.push(uuidClient);
@@ -373,10 +375,16 @@ const requestListener = function(req, res) {
                         clientWantConnect = clientWantConnect.filter(e => e !== uuidClient)
                     });
                 } else {
-                    // res.setHeader("UserId", 12);
-                    res.setHeader("Content-Type", "text/plain; charset=utf-8;");
-                    res.write('BANNED');
-                    res.end();
+                  if(clientWantConnect.includes(uuidClient)){
+                    res.write('UUID');
+                  }else{
+                      if(!allowsypremote.checked){
+                        res.write('NONEW');
+                      }else{
+                        res.write('BANNED');
+                      }
+                  }
+                  res.end();
                 }
             }
         } else {
@@ -415,12 +423,11 @@ documentgetElementById = function(e){
 includeIdE = function(){
   var e = document.body.getElementsByTagName("*");
   var i = 0;
-  while(i!=e.length){
+  pf.repeat(e.length, function (i) {
     if(e[i].id!=""){
       documentgetElementById(e[i].id);
     }
-    i++;
-  }
+  });
 }
 
 includeIdE();
@@ -441,16 +448,20 @@ function openInBrowser(e) {
 }
 discordbutton.onclick = function () {
   openInBrowser('https://discord.gg/asp3UzzUHR');
+  vibrationPhone();
 }
 nwjsbutton.onclick = function () {
   openInBrowser('https://nwjs.io/');
+  vibrationPhone();
 }
 playBrowser.onclick = function(){
   openInBrowser(currectWEBPAGE);
+  vibrationPhone();
 }
 
 installSyp.onclick = function(){
   openInBrowser(serverAddress);
+  vibrationPhone();
 }
 
 checkupdate.onclick = function(){
@@ -459,6 +470,7 @@ checkupdate.onclick = function(){
   }else{
     alert('Something wrong!');
   }
+  vibrationPhone();
 }
 
 btnSettings.onclick = function(){
@@ -467,14 +479,25 @@ btnSettings.onclick = function(){
   }else{
     settingsMenu.classList.add('leftSettings');
   }
+  vibrationPhone();
 }
 
 closeSettings.onclick = btnSettings.onclick;
 
 hideBtn.onclick = function(){
   win.minimize();
+  vibrationPhone();
 }
 
+function vibrationPhone() {
+  if(isBrowser){
+    try{
+      window.navigator.vibrate(200);
+    }catch(e){
+      alert(String(e));
+    }
+  }
+}
 win.setAlwaysOnTop(true);
 
 setSlide = function(val){
@@ -499,6 +522,27 @@ closeBtn.onclick = function(){
   sypStorage.set('volume', window.percentesVolume);
   sypStorage.set('positionPlay', vCurrectTime - 1);
   win.close();
+  vibrationPhone();
+}
+btnAudioQ.onclick = function () {
+  if(!isBrowser){
+    if(qualityAudio.classList.contains('sA')){
+      qualityAudio.classList.remove('sA');
+      qualityAudio.style.display = 'flex';
+      qualityAudio.classList.add('sAReverse');
+      onresize();
+    }else{
+      qualityAudio.classList.add('sA');
+      qualityAudio.classList.remove('sAReverse');
+      setTimeout(function () {
+        qualityAudio.style.display = 'none';
+        onresize();
+      }, 1000);
+    }
+  }else{
+    alert('Only server side!')
+  }
+  vibrationPhone();
 }
 setSlide(0);
 
@@ -520,11 +564,18 @@ initSYP = function(){
     if(a>-1 && 65536>a)
     sypStorage.set('sypport', sypremoteport.value);
   }
+  allowsypremote.onchange = function(){
+    sypStorage.set('allowsypremote', String(allowsypremote.checked));
+  }
   changelogopen.onclick = function () {
     window.open('https://raw.githubusercontent.com/SimaKyr/simpleYoutubePlayer/master/player/CHANGELOG.txt');
+    vibrationPhone();
   }
   sypremoteport.value = portServer;
-
+  const allrc = sypStorage.get('allowsypremote');
+  if(typeof allrc != 'undefined'){
+    allowsypremote.checked = Boolean(allrc);
+  }
   var cm = contextMenu.new();
 
   cm.add(contextMenu.button('DevTool Chromium','img/devtool.png',function(){win.showDevTools()}));
@@ -541,15 +592,13 @@ initSYP = function(){
 
   onclick = function(){
     cm.close();
+    vibrationPhone();
   }
   document.body.ondrop = function (e) {
-    if(e.dataTransfer.items.length != 0){
-      e.preventDefault();
-    }
+    e.preventDefault();
     if (e.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
-      for (var i = 0; i < e.dataTransfer.items.length; i++) {
-        // If dropped items aren't files, reject them
+      pf.repeat(e.dataTransfer.items, function (i) {
         if (e.dataTransfer.items[i].kind === 'file') {
           var file = e.dataTransfer.items[i].getAsFile();
           const supportedFormat = file.type.startsWith('video') || file.type.startsWith('audio');
@@ -558,15 +607,12 @@ initSYP = function(){
           }
           // console.log('... file[' + i + '].name = ' + file.name);
         }
-      }
+      });
     } else {
-      // Use DataTransfer interface to access the file(s)
-      // for (var i = 0; i < e.dataTransfer.files.length; i++) {
-      //   console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
-      // }
     }
   }
   document.body.ondragover = function (e) {
+    e.preventDefault();
     // e.clientX
     // e.clientY
     // e.preventDefault();
@@ -617,12 +663,11 @@ async function searchImage(text) {
       const tmp = 'https://e';
       var i = 0;
       var t = [];
-      while(i != k.length){
-          if(k[i].indexOf('gstatic.com') == 14){
-              t.push(decodeURIComponent(tmp + k[i].split('"')[0]));
-          }
-          i++;
-      }
+      pf.repeat(k, function (i) {
+        if(k[i].indexOf('gstatic.com') == 14){
+            t.push(decodeURIComponent(tmp + k[i].split('"')[0]));
+        }
+      })
       resolve(t);
     })
       .catch(function (error) {
@@ -668,7 +713,7 @@ window.setcurrectWEBPAGE = function (e) {
       document.title = name + ' - SYP Player';
       namemedia.innerText = name;
       if(tags.artist){
-        madeby.innerText = tags.artist
+        madeby.innerText = tags.artist;
       }else{
         if(tag == undefined){
           desc.style.display = 'none';
@@ -677,9 +722,9 @@ window.setcurrectWEBPAGE = function (e) {
       thumbnail.title = tags.title;
         if (image) {
           var base64String = "";
-          for (var i = 0; i < image.data.length; i++) {
-              base64String += String.fromCharCode(image.data[i]);
-          }
+          pf.repeat(image.data, function (i) {
+            base64String += String.fromCharCode(image.data[i]);
+          })
           var base64 = "data:" + image.format + ";base64," + window.btoa(base64String);
           thumbnail.setAttribute('src', base64);
           setBackground();
@@ -781,11 +826,11 @@ function getActionPerfURL(action, open) {
   if(location.origin != 'file://'){
     a = a.replace(':' + portServer, '');
   }
-  a = a + '/sypplayer?uuid=' + localStorage.SYPPlayerUUID;
+  a = a + '/rc?d=' + localStorage.SYPPlayerUUID;
   if(open){
-    a += '&open=' + open
+    a += '&o=' + open
   }else{
-    a += '&command=' + action;
+    a += '&c=' + action;
   }
   return a;
 }
@@ -837,12 +882,17 @@ function setPlayStatus() {
   xhr.onload = function (e) {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
-        if(xhr.responseText == 'UUID'){
+        const rsp = xhr.responseText;
+        if(rsp == 'UUID'){
           splashinfo.innerText = 'Allow in real SYP Player connection!';
           loadingScreen.classList.remove('fadeOut');
         }else{
-          if(xhr.responseText == 'BANNED'){
-            splashinfo.innerText = 'YOU ARE BANNED!';
+          if(rsp == 'BANNED' || rsp == 'NONEW'){
+            if(rsp == 'NONEW'){
+              splashinfo.innerText = 'Server don\'t accept new connections!';
+            }else{
+              splashinfo.innerText = 'YOU ARE BANNED!';
+            }
             loadingScreen.classList.remove('fadeOut');
           }else{
             if(!loadingScreen.classList.contains('fadeOut')){
@@ -926,13 +976,20 @@ playBtn = function(){
   if(isBrowser){
     setTimeout(setPlayStatus, 100);
   }
+  vibrationPhone();
 }
 
-btnReplay.onclick = replayTrack;
+btnReplay.onclick = function () {
+  vibrationPhone();
+  replayTrack();
+};
 
 btnPlay.onclick = playBtn;
 
-btnNext.onclick = nextTrack;
+btnNext.onclick = function () {
+  vibrationPhone();
+  nextTrack();
+};
 
 
 autoplayenabled.oninput = function () {
@@ -950,6 +1007,7 @@ function downloadFile(filePath){
 
 btnDownload.onclick = function () {
   downloadFile(futureplayer.src);
+  vibrationPhone();
 }
 
 var statusClick = false;
@@ -984,7 +1042,13 @@ document.onpointermove = function(e){
     }
 }
 sliderT.onwheel = function(e){
-  setPlayPos2(vCurrectTime - e.deltaY/5);
+  var n = vCurrectTime;
+  if(navigator.userAgent.indexOf("Firefox") !== -1){
+    n-=e.deltaY*4;
+  }else{
+    n-=e.deltaY/5;
+  }
+  setPlayPos2(n);
 }
 window.percentesVolume = 0;
 
@@ -1043,6 +1107,7 @@ function putList(l, f, li, timeout){
           const k = i;
           p.onclick = function () {
             f(k, a[k]);
+            vibrationPhone();
           }
         }
         if(li){
@@ -1052,7 +1117,7 @@ function putList(l, f, li, timeout){
         }
       }
     }
-    while(i!=a.length){
+    pf.repeat(a, function (i) {
       if(timeout){
         const n = i;
         setTimeout(function () {
@@ -1061,8 +1126,7 @@ function putList(l, f, li, timeout){
       }else {
         z(i, a);
       }
-        i++;
-    }
+    });
     window.onresize();
 }
 
@@ -1115,7 +1179,7 @@ searchR.onkeyup = function(e){
     }
 }
 
-searchImg.onclick = function(){ searchR.onkeyup({key: 'Enter'}); };
+searchImg.onclick = function(){ searchR.onkeyup({key: 'Enter'}); vibrationPhone(); };
 
 listSearch2 = false;
 function listSearch3(timer) {
@@ -1165,10 +1229,9 @@ function getKeyword(word, endpoint) {
       const a = JSON.parse(e.replace('window.google.ac.h(','').replace('"}])', '"}]'))[1];
       var i = 0;
       var z = [];
-      while(i != a.length){
-          z.push(a[i][0]);
-          i++;
-      }
+      pf.repeat(a, function (i) {
+        z.push(a[i][0]);
+      });
       endpoint(z.join('\n'));
     });
   }
@@ -1195,9 +1258,8 @@ function setPlayPos(x){
 function setPlayPos2(x){
   if(isBrowser){
     performActionRemote('timeset&i=' + x);
-  }else{
-    futureplayer.currentTime = Number(x);
   }
+  futureplayer.currentTime = Number(x);
 }
 function setVolume(v){
   if(!isBrowser){

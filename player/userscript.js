@@ -46,11 +46,13 @@ g.onclick = function(){
   });
   var idVideo = new URL(location.href).searchParams.get('v');
   var uuidSYP = localStorage.SYPPlayerUUID;
-  var urlReq = "${FULLADDRESS}/sypplayer?open=" + idVideo + "&uuid=" + uuidSYP;
+  var urlReq = "${FULLADDRESS}/rc?o=" + idVideo + "&d=" + uuidSYP;
 
-  oReq.open("GET",urlReq);
+  oReq.open("GET", urlReq);
   oReq.send();
   document.getElementsByClassName('video-stream html5-main-video')[0].pause();
 }
 var p = document.getElementsByClassName('title style-scope ytd-video-primary-info-renderer')[0];
-if(p) p.appendChild(g);
+if(typeof p == 'object'){
+  p.appendChild(g);
+}

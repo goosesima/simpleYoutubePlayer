@@ -3,10 +3,12 @@
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SYP Player</title>
     <link rel="icon" type="image/png" href="img/sypplayer.png" />
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" type="text/css" href="lib/contextmenu.css">
+    <script src="lib/pf.js" charset="utf-8"></script>
     <script src="browser.js" charset="utf-8"></script>
     <script src="ytparser.js" charset="utf-8"></script>
     <script src="lib/contextmenu.js"></script>
@@ -35,9 +37,11 @@
 
     <div id="windowBar">
       <img alt="SYP Player" src="img/sypplayer.svg" id="sypplayer">
-      <b id="windowtitle">SYP Player</b>
-      <img src="img/rollup.png" class="controlpad" id="hideBtn" alt="Hide">
-      <img src="img/close.png" class="controlpad" id="closeBtn" alt="Close">
+      <b id="windowtitle">SYP Player by SimaKyr</b>
+      <div class="windowcontrol">
+        <img src="img/rollup.png" class="controlpad" id="hideBtn" alt="Hide">
+        <img src="img/close.png" class="controlpad" id="closeBtn" alt="Close">
+      </div>
     </div>
     <div id="loadingScreen" class="fadeSupport">
       <div>
@@ -60,16 +64,20 @@
               </div>
           </div>
         <img src="img/music.png" id="thumbnail"><br>
-        <marquee behavior="scroll" direction="left" id="namemedia">Music...</marquee>
+        <div class="nm" id="namemediadiv">
+          <b id="namemedia" class="nm2">Music...</b>
+        </div>
           <div id="desc" class="divname">
-            <p alt="Channel who share music" id="madeby">Made by ...</p>
+            <div class="nm" id="madebydiv">
+              <p alt="Channel who share music" id="madeby" class="nm2">Made by ...</p>
+            </div>
             <div class="line divname">
               <img src="img/like.png">
-              <p id="likes">Likes</p>
+              <p id="likes" class="descp">Likes</p>
             </div>
             <div class="line divname">
               <img src="img/dislike.png">
-              <p id="dislikes">Dislikes</p>
+              <p id="dislikes" class="descp">Dislikes</p>
             </div>
             </div>
           </div>
@@ -87,8 +95,12 @@
         <img src="img/left.png" id="btnNext" class="controlpad" alt="Play next track">
         <img src="img/settings.png" id="btnSettings" class="controlpad" alt="Open settings">
         <img src="img/download.png" id="btnDownload" class="controlpad" alt="Download">
+        <img src="img/qualityaudio.png" id="btnAudioQ" class="controlpad" alt="Change quality audio">
         <audio id="futureplayer" crossorigin="anonymous">
         </audio>
+    </div>
+    <div id="qualityAudio" class="sA" style="display: none">
+
     </div>
     </div>
         <div id="more">
@@ -106,33 +118,45 @@
     <div id="settingsMenu" class="leftSettings">
         <div>
           <p>Settings</p>
-          <p id="installSyp" class="btn controlpad" alt="Make youtube better in browser">Install userscript or open SYP Remote</p>
-          <p id="checkupdate" class="btn controlpad">Check update</p>
-          <p id="installffmpeg" class="btn controlpad">Install ffmpeg</p>
-          <p id="changelogopen" class="btn controlpad">Open Change Log</p>
-          <b>Autoplay next track:</b>
-          <input type="checkbox" name="autoplayenabled" id="autoplayenabled" checked>
-          <br>
-          <b>Discord RPC(uses EasyRP):</b>
-          <input type="checkbox" name="discordrpc" id="discordrpc" checked>
-          <br>
-          <b>SYP Remote port:</b>
-          <input type="number" id="sypremoteport" max="65535" min="1" value="49902" step="1" placeholder="49902" required>
-          <br>
-          <i>*Port changes only on restart SYP Player. Don't forget to reinstall userscript.</i>
-          <br>
-          <b>Change audio visualizer theme:</b>
-          <select name="stylevisual" id="stylevisual">
-            <option value="sypplayer">AquamarineAndTV theme</option>
-            <option value="80s">80s theme</option>
-            <option value="disabled">Disabled</option>
-          </select>
-          <b>Powered with NW.JS:</b>
-          <img src="img/nwjs.png" alt="Powered with NW.JS" id="nwjsbutton" class="ads">
-          <br>
-          <b>Official Discord server:</b>
-          <img src="img/discord.png" alt="Open Discord server" id="discordbutton" class="ads">
-          <br>
+          <div id="norc">
+            <p id="installSyp" class="btn controlpad" alt="Make youtube better in browser">Install userscript or open SYP Remote</p>
+            <p id="checkupdate" class="btn controlpad">Check update</p>
+            <p id="installffmpeg" class="btn controlpad">Install ffmpeg</p>
+            <p id="changelogopen" class="btn controlpad">Open Change Log</p>
+            <div class="layout">
+              <b>Autoplay next track:</b>
+              <input type="checkbox" name="autoplayenabled" id="autoplayenabled" checked>
+            </div>
+            <div class="layout">
+              <b>Discord RPC(uses EasyRP):</b>
+              <input type="checkbox" name="discordrpc" id="discordrpc" checked>
+            </div>
+            <div class="layout">
+              <b>Allow connection for new users:</b>
+              <input type="checkbox" name="allowsypremote" id="allowsypremote" checked>
+            </div>
+            <div class="layout">
+              <b>SYP Remote port:</b>
+              <input type="number" id="sypremoteport" max="65535" min="1" value="49902" step="1" placeholder="49902" required>
+            </div>
+            <i>*Port changes only on restart SYP Player. Don't forget to reinstall userscript.</i>
+          <div class="layout">
+            <b>Change audio visualizer theme:</b>
+            <select name="stylevisual" id="stylevisual">
+              <option value="sypplayer">AquamarineAndTV theme</option>
+              <option value="80s">80s theme</option>
+              <option value="disabled">Disabled</option>
+            </select>
+          </div>
+          </div>
+          <div class="layout">
+            <b>Powered with NW.JS:</b>
+            <img src="img/nwjs.png" alt="Powered with NW.JS" id="nwjsbutton" class="ads">
+          </div>
+          <div class="layout">
+            <b>Official Discord server:</b>
+            <img src="img/discord.png" alt="Open Discord server" id="discordbutton" class="ads">
+          </div>
           <span>
           99% made by SimaKyr.
           SYP Player icon owned by SimaKyr.

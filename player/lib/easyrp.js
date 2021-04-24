@@ -33,7 +33,6 @@ easyrp.online = false;
 easyrp.update = async function () {
   let promise = new Promise((resolve, reject) => {
     if(!isBrowser){
-      const config = { encoding: "utf8", flag: "w"};
       const madeby = 'by SimaKyr, see more in GitHub';
       if(typeof generateInfoJSON == 'function'){
         var url = currectWEBPAGE;
@@ -57,6 +56,7 @@ easyrp.update = async function () {
   return await promise;
 }
 easyrp.config = function (details, state, hold) {
+  const config = { encoding: "utf8", flag: "w"};
   const time = easyrp.timestamp();
   var icon = 'sypplayer';
   var placeholder = 'Just SYP Player';
@@ -77,7 +77,7 @@ easyrp.config = function (details, state, hold) {
     easyrp.endTimeStamp = time;
     easyrp.startTimeStamp = time;
   }
-  return `[Identifiers]
+  const n = `[Identifiers]
 ClientID=${easyrp.clientID}
 
 [State]
@@ -91,6 +91,7 @@ LargeImage=sypplayer
 LargeImageTooltip=${hold}
 SmallImage=${icon}
 SmallImageTooltip=${placeholder}`
+  fs.writeFile(easyrp.cfgfile, n, function (e, data) {});
 }
 easyrp.executable = function () {
   const p = process.platform;

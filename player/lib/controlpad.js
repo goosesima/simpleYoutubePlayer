@@ -99,10 +99,10 @@ setInterval(
         const xRight = -Number(String(controler.axes[2]).substring(0,4))*100;
         const yRight = Number(String(controler.axes[3]).substring(0,4))*100;
         if(xRight != 0){
-          document.getElementById('sliderT').onwheel({'deltaY': xRight});
+          sliderT.onwheel({'deltaY': xRight});
         }
         if(yRight != 0){
-          document.getElementById('sliderTMusic').onwheel({'deltaY': yRight});
+          sliderTMusic.onwheel({'deltaY': yRight});
         }
         // if(!controlPad._getElement()){
         //   while(!controlPad._getElement()){

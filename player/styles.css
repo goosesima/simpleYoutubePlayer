@@ -1,12 +1,8 @@
 #windowBar{
-    -webkit-app-region: drag;
-    position: fixed;
-    top:  0;
-    left:0;
-    margin: 0px;
-    width: 100%;
-    z-index: 2;
-    padding: 2px;
+  -webkit-app-region: drag;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 #list .title-adl{
   color: #fff;
@@ -28,26 +24,20 @@
 #list div:hover{
   background: #363636;
 }
-#windowBar img{
-    padding: 2px;
+#sypplayer{
+  height: 24px;
+}
+.windowcontrol img{
     height: 24px;
     transition: 0.3s background;
-    border-radius: 100px;
     text-align: right;
     -webkit-app-region: no-drag;
-    position: relative;
     cursor: pointer;
-    background: rgb(70,93,255);
+    border-radius: 100px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
-#windowBar img:hover{
-    background: #eee;
-}
-#hideBtn{
-  left: calc(100% - 100px);
-}
-#closeBtn{
-  left: calc(100% - 100px);
+.windowcontrol img:hover{
+  background: #eee;
 }
 .ads{
   cursor: pointer;
@@ -59,11 +49,7 @@
   background: #fff;
 }
 #windowtitle{
-  color: #f00;
-  position: relative;
-  top: -5px;
-  font-weight: bolder;
-  display: none;
+  color: #fff;
 }
 #sypplayer{
   background: none !important;
@@ -78,16 +64,79 @@
 #desc .line img{
   height: 16px;
 }
+#stylevisual{
+  width: 100%;
+}
+.layout{
+  display: flex;
+  align-items: center;
+}
 .line{
   display: -webkit-inline-box !important;
 }
-marquee{
-    width: 10em;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    margin-left: 10px;
-    color: #000;
+#namemediadiv{
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  margin-left: 10px;
+}
+#madeby{
+  display: inline;
+  margin: 0;
+}
+#madebydiv{
+  width: 10em;
+  height: 1.1em;
+  margin-bottom: 10%;
+}
+.nm{
+  overflow: hidden;
+  display: inline-flex;
+}
+.selected-adl{
+  border: solid #42a5f5 3px;
+}
+#qualityAudio{
+  display: flex;
+  overflow-x: auto;
+}
+#qualityAudio div{
+  background: #fff;
+  margin: 5px;
+  border-radius: 20px;
+  padding: 0 2px;
+  cursor: pointer;
+  transition: .3s background;
+}
+#qualityAudio div:hover{
+  background: #ccc;
+}
+#qualityAudio p, #qualityAudio b{
+  margin: 0px;
+}
+#namemedia{
+  height: 1.2em;
+  width: 10em;
+  color: #000;
+}
+.nm2{
+    animation-name: scrolltext;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+    display: -webkit-inline-box;
+}
+#namemedia:hover {
+  animation-play-state: paused;
+}
+@keyframes scrolltext {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 .infoline{
   font-size: 12px;
@@ -108,9 +157,13 @@ marquee{
 body{
  overflow: hidden !important;
  background-size: 100%;
+ margin: unset;
+ padding: 10px;
+ backdrop-filter: blur(2px) brightness(60%);
 }
-#contentWin{
-    background: rgba(255,255,255,0.2);
+body, html{
+  height: -webkit-fill-available;
+  width: -webkit-fill-available;
 }
 #slider{
     background: linear-gradient(90deg, rgba(156,168,255,1) 0%, rgba(216,150,255,1) 100%);
@@ -136,10 +189,10 @@ body{
 #sliderTMusic{
     /* background: #eee; */
     background: linear-gradient(90deg, rgba(247,255,171,1) 0%, rgba(130,255,241,1) 100%);
-    mix-blend-mode: screen;
     border-radius: 100px;
     display: flex !important;
     flex-direction: column;
+    height: 114px;
     padding: 0 !important;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
@@ -157,7 +210,7 @@ body{
 #none{
     visibility:hidden;
 }
-#desc p{
+.descp, #madebydiv{
     background: linear-gradient(90deg, rgba(70,93,255,1) 0%, rgba(159,0,255,1) 100%);
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     border-radius: 100px;
@@ -167,8 +220,9 @@ body{
 #name{
     text-align:center;
     display: -webkit-box;
+    padding-top: 10px;
 }
-p, a, marquee, b, i, input, span, .btn, select{
+p, a, b, i, input, span, .btn, select{
  font-family: 'Roboto', sans-serif;
 }
 #panel img{
@@ -206,7 +260,7 @@ img, p, div {
     padding: 2px;
 }
 .divname{
-    display: block;
+    display: table-caption;
     padding-left: 5px;
 }
 .list{
@@ -249,8 +303,8 @@ img, p, div {
     width: 100%;
     margin:0;
     padding:0;
-        mix-blend-mode: difference;
-        color: white;
+    mix-blend-mode: difference;
+    color: white;
 }
 
 #listSelect{
@@ -288,6 +342,7 @@ img, p, div {
     font-size: larger;
     margin-right: 5px;
     margin-left: 5px;
+    box-shadow: none;
 }
 #searchBox{
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -295,7 +350,6 @@ img, p, div {
     background: #fff;
     display: -webkit-box;
     vertical-align: middle;
-    margin-top: 24px;
     height: 32px;
 }
 #listSearch p {
@@ -348,6 +402,34 @@ img, p, div {
 .fadeOut{
   opacity: 0;
   visibility: hidden;
+}
+.sA{
+  animation-name: simpleAnimation;
+  animation-duration: 1s;
+  animation-play-state: running;
+}
+.sAReverse{
+  animation-name: simpleAnimation2;
+  animation-duration: 1s;
+  animation-play-state: running;
+}
+@keyframes simpleAnimation {
+  from {
+    transform: scaleY(1);
+  }
+
+  to {
+    transform: scaleY(0);
+  }
+}
+@keyframes simpleAnimation2 {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
 }
 .btn{
   border-radius: 100px;
