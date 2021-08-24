@@ -6,11 +6,15 @@ add.CSS(`
     background:#aaa;
   }
   #sypplayeropen{
+    position: fixed;
+    top: 1.2%;
+    left: 9%;
+    image-rendering: -webkit-optimize-contrast;
+    height: 32px;
+    width: 32px;
+    z-index: 10000;
     color: #000;
     border-radius: 50px !important;
-    padding: 5px 16px 8px 16px;
-    border-radius: 5px;
-    background-repeat: no-repeat !important;
     background-image: url(` + '${FULLADDRESS}' + `/favicon.ico) !important;
     display: inline;
     cursor: pointer !important;
@@ -36,9 +40,11 @@ g.id = 'sypplayeropen';
 g.alt = 'Open in SYP Player by SimaKyr';
 g.onclick = function(){
   var oReq = new XMLHttpRequest();
+  oReq.withCredentials = true;
   oReq.addEventListener("load", function(e){
     if(e.responseText=='UUID'){
       alert('SYP Player click Contine in SYP Player to contine.');
+      oReq.send();
     }
     if(e.responseText=='BANNED'){
       alert('You are banned! Unban in Settings in SYP Player.');
@@ -52,7 +58,7 @@ g.onclick = function(){
   oReq.send();
   document.getElementsByClassName('video-stream html5-main-video')[0].pause();
 }
-var p = document.getElementsByClassName('title style-scope ytd-video-primary-info-renderer')[0];
+var p = document.body;
 if(typeof p == 'object'){
   p.appendChild(g);
 }

@@ -1,6 +1,7 @@
 nwjsffmpeg = {};
 nwjsffmpeg.fs = require('fs');
 nwjsffmpeg.axios = require('axios');
+nwjsffmpeg.path = require('path');
 nwjsffmpeg.JSZip = require('jszip');
 if(typeof window == 'undefined'){
   nwjsffmpeg.isNWJS = false;
@@ -23,7 +24,7 @@ nwjsffmpeg._getDownloadName = function(vers){
   if(p == s[1]){
     nameFile += 'win';
   }
-  if(p == 'darwin'){
+  if(p == s[2]){
     nameFile += 'osx';
     if(a == 'ia32'){
       alert('You CPU 32bit + OSX don\'t support by nwjs-ffmpeg!');
@@ -59,9 +60,14 @@ nwjsffmpeg.install = function(og){
             sypStorage.set('installed_ffmpeg', true);
             if(typeof og != 'undefined') og();
           }
-          var dir = '../../'
+          var dir = nwjsffmpeg.path.resolve(__dirname, '../..');
+          if(process.platform == 'linux') {
+            dir += '/lib'
+          }
           var nameFile = Object.keys(zip.files)[0];
-          var wstream = nwjsffmpeg.fs.createWriteStream(dir + nameFile);
+          const filepath = dir + '/' + nameFile;
+          console.log(filepath);
+          var wstream = nwjsffmpeg.fs.createWriteStream(filepath);
           var writer = zip.files[nameFile].nodeStream();
           writer.on('finish', function () {
             k();

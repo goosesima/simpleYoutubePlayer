@@ -25,7 +25,11 @@ easyrp.start = function () {
 }
 easyrp.stop = function () {
   if(easyrp.online){
-    process.kill(easyrp.pid);
+    try {
+      process.kill(easyrp.pid);
+    } catch (e) {
+
+    }
     easyrp.online = false;
   }
 }

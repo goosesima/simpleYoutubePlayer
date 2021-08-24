@@ -10,19 +10,19 @@ sypJSON.set = (content, name, value) => {
   var p;
   try{
     p = JSON.parse(content);
-  }catch{ p = {}; }
+  }catch(e){ p = {}; }
   p[name] = value;
   return JSON.stringify(p);
 }
 sypJSON.get = (content, name) => {
   try{
     return JSON.parse(content)[name];
-  }catch{ p = {}; }
+  }catch(e){ p = {}; }
 }
 sypJSON.getLength = (content) => {
   try{
     return Number(Object.keys(JSON.parse(content)).length)
-  }catch{
+  }catch(e){
     return 0;
   }
 }
@@ -78,7 +78,7 @@ module.exports.set = function(name, value){
   try{
     p = module.exports.simpleReadFileSync(storageFile);
   }catch(e){ module.exports.checkPermission(e, 'read'); }
-  try{ p = sypJSON.set(p, name, value); }catch{}
+  try{ p = sypJSON.set(p, name, value); }catch(e){}
   try{
     if(isBrowser){
       localStorage[storageFile] = p;

@@ -25,7 +25,7 @@ try {
     updaterSYP.fileVersion2 = '../package.json';
     updaterSYP.workingpath = '..';
   }
-} catch {
+} catch (e){
 }
 updaterSYP.checkUpdate = function(onnewupdate, onnoupdate, dev, og){
   axios.get(updaterSYP.gitUrlZip, { responseType: 'arraybuffer' }).then(function (e) {
@@ -41,7 +41,7 @@ updaterSYP.checkUpdate = function(onnewupdate, onnoupdate, dev, og){
           if(typeof versionHere == 'undefined'){
             versionHere = 'notinstalled';
           }
-        }catch{
+        }catch (e){
           versionHere = 'errorpackagejson';
         }
         if(dev != 'update'){
@@ -100,7 +100,7 @@ updaterSYP.upgradeApp = function(onendupgrade){
 }
 updaterSYP.reloadApp = function(){
   if(updaterSYP.isNWJS){
-    location.reload();
+    chrome.runtime.reload()
   }else{
     console.log('**Trying to restart...**\n**Error! You need NW.JS to use this application.**\n**Tip: Restart using command line**')
   }

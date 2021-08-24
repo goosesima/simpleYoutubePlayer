@@ -26,27 +26,18 @@ visual.init = function () {
   }
   visual.connect();
 }
-visual.connect = function () {
-  var context = new AudioContext();
-  var src = context.createMediaElementSource(futureplayer);
-  var analyser = context.createAnalyser();
-  var ctx = canvas.getContext("2d");
-  src.connect(analyser);
-  analyser.connect(context.destination);
-
-  analyser.fftSize = 256;
-
-  var bufferLength = analyser.frequencyBinCount;
-  var dataArray = new Uint8Array(bufferLength);
+visual.clear = function () {
+  visual.ctx.clearRect(0, 0, visual.width, visual.height);
+}
+visual.render = function() {
+  var dataArray = new Uint8Array(visual.bufferLength);
   function byteString(n) {
     if (n < 0 || n > 255 || n % 1 !== 0) {
         throw new Error(n + " does not fit in a byte");
     }
     return ("000000000" + n.toString(2)).substr(-8)
   }
-  function clear() {
-    ctx.clearRect(0, 0, visual.width, visual.height);
-  }
+
   function fixColor(a) {
     if(0 > a){
       a = 0;
@@ -56,43 +47,55 @@ visual.connect = function () {
     }
     return a;
   }
-  function render() {
-   clear();
-   if(visual.style == 2){
-     return undefined;
-   }
-   analyser.getByteFrequencyData(dataArray);
-   var i = 0;
-   while (i != bufferLength) {
-     const t = byteString(dataArray[i]);
-     var r = 0, g = 0, b = 0, a = 0;
-     // Glithed 80s effect
-     if(visual.style == 1){
-       r = parseInt(t.substring(0, 3) + t.substring(0, 3) + t.substring(0, 2), 2);
-       g = parseInt(t.substring(3, 6) + t.substring(3, 6) + t.substring(3, 5), 2);
-       b = t.substring(6, 8) + t.substring(6, 8)
-       b += b;
-       b = parseInt(b, 2);
-     }
-     //Normal
 
-     if(visual.style == 0){
-       r = i;
-       g = t.substring(0, 4)
-       g += g;
-       g = parseInt(g, 2);
-       b = t.substring(4);
-       b += b;
-       b = parseInt(b, 2);
-     }
-     a = i + 200;
-     a = (fixColor(a)+1) / 256;
-     ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-     ctx.fillRect(visual.width / bufferLength * i, visual.height - visual.height/analyser.fftSize * dataArray[i], visual.width / bufferLength, visual.height);
-     i++;
+ visual.clear();
+ if(visual.style == 2){
+   return undefined;
+ }
+ visual.analyser.getByteFrequencyData(dataArray);
+ pf.repeat(visual.bufferLength, function (i) {
+   const t = byteString(dataArray[i]);
+   var r = 0, g = 0, b = 0, a = 0;
+   // Glithed 80s effect
+   if(visual.style == 1){
+     r = parseInt(t.substring(0, 3) + t.substring(0, 3) + t.substring(0, 2), 2);
+     g = parseInt(t.substring(3, 6) + t.substring(3, 6) + t.substring(3, 5), 2);
+     b = t.substring(6, 8) + t.substring(6, 8)
+     b += b;
+     b = parseInt(b, 2);
    }
-  }
-  visual.worker = setInterval(render, 1000 / visual.fps);
+   //Normal
+
+   if(visual.style == 0){
+     r = i;
+     g = t.substring(0, 4)
+     g += g;
+     g = parseInt(g, 2);
+     b = t.substring(4);
+     b += b;
+     b = parseInt(b, 2);
+   }
+   a = i + 200;
+   a = (fixColor(a)+1) / 256;
+   visual.ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+   visual.ctx.fillRect(visual.width / visual.bufferLength * i, visual.height - visual.height/visual.analyser.fftSize * dataArray[i], visual.width / visual.bufferLength, visual.height);
+ });
+}
+visual.connect = function () {
+  visual.context = new AudioContext();
+  visual.src = visual.context.createMediaElementSource(futureplayer);
+  visual.analyser = visual.context.createAnalyser();
+  visual.ctx = canvas.getContext("2d");
+  visual.src.connect(visual.analyser);
+  visual.analyser.connect(visual.context.destination);
+
+  visual.analyser.fftSize = 256;
+
+  visual.bufferLength = visual.analyser.frequencyBinCount;
+
+  visual.worker = setInterval(function () {
+    window.requestAnimationFrame(visual.render);
+  }, 1000 / visual.fps);
 }
 document.addEventListener("DOMContentLoaded", function () {
   if(!isBrowser){
