@@ -103,7 +103,9 @@ easyrp.executable = function () {
     return 'easyrp.exe';
   }else{
     if(p == 'linux'){
-      return 'easyrp';
+      const d = path.join(easyrp.workingPath, 'player', 'easyrp', 'easyrp');
+      require('fs').chmodSync(d, '777');
+      return d;
     }else{
       console.log('You platform don\'t support: EASYRP');
       return 'error';

@@ -303,15 +303,17 @@ exports.js.execute = function (code, jscode) {
 }
 exports.js.getF = function (jscode) {
   const n = jscode.split('\n');
-  const sP = ['var c=a[0]', 'a.reverse()', 'a.splice(0,b)', 'a=a.split("");'];
+  const sP = ['var c=a[0]', 'a.reverse()', 'n(a,b){a.splice', 'a=a.split("");'];
   var answ  = ['', '', '', ''];
-  exports.pf.repeat(sP, function (y) {
-    exports.pf.repeat(n, function (i) {
-      if(n[i].indexOf(sP[y]) != -1){
-          answ[i] = n[y];
+  for (var i = 0; i < sP.length; i++) {
+    for (var z = 0; z < n.length; z++) {
+      if(answ[z] == ''){
+        if(n[i].indexOf(sP[z]) > -1){
+            answ[z] = n[i];
+        }
       }
-    });
-  });
+    }
+  }
   exports.pf.repeat(answ, function (i) {
     if(i != 3){
       answ[i] = answ[i].split(':')[0];

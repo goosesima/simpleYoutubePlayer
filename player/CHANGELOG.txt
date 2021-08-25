@@ -60,11 +60,29 @@ Version 6 [24.04.2021]:
 - Feedback via vibration on mobile devices.
 - Fixed local file accept.
 - UserScript now fully working.
-
+Version 7 [24.08.2021]:
+- Video support.
+- Now you can watch video in fullscreen.
+- Fixed nwjs-ffmpeg installer for Linux.
+- Now disabled debug in pf.js (less ram eats).
+- Maybe sypStorage support nwjs for Windows XP.
+- Fixed local files eating for Linux.
+- Replaced "location.reload()" to "chrome.runtime.reload()", because he restarts also nodejs modules.
+- Fixed possible vulnerability in "ytparser.js". Now uses interpreter to run decryption code(before it runned using "eval()").
+- Fixed IP detection for Linux.
+- Better userscript.
+- A bit better "run.sh" for Linux. (Edit "run.sh" to use HW acceleration on Linux).
+Version 8 [25.08.2021]:
+- Fixed decryption keys (Now every video plays).
+- Fixed missing version 7 changelog. (Forgot put new changelog file)
+- Fixed Discord RPC on Linux. (Now show up status in your Profile)
 TODO:
 - Change IP to custom or userscript detect IP(?).
 - "Native" ngrok support.
-- Video support.
+- Keyboard support.
+- Support DiscordRPC for Linux.
+- Watch anime and movies for education purporse 😲!
+- Different languages support.
 - Does https use gzip to compress internet packages?
 - Firebase for userdata and SYP Remote.
 - Special SYP links for open any music, (even on PC)?
@@ -78,9 +96,7 @@ TODO:
 - Open source soundpad?
 - Chromecast support.
 - Script what install NW.JS and SYP Player.
-- Offline files import.
 - Android application.
-- Seekbar left - right keyboard.
 - Soundcloud or bandcamp support.
 - Spotify???
 - See how many views.
