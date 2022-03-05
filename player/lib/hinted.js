@@ -103,5 +103,5 @@ hintedJS.style = function(e) {
 }
 
 hintedJS.help = function(){
-  console.log('hintedJS: Script made by SimaKyr\nUsage: add in you element attribute alt\nnChange style using: hintedJS.style()\nDisable or change text hint: hintedJS.hintText=\'some text\'\nDisable shadow: hintedJS.shadow = false;\nDisable hintedJS: hintedJS.enabled = false;');
+  console.log('hintedJS: Script made by GooseSima\nUsage: add in you element attribute alt\nnChange style using: hintedJS.style()\nDisable or change text hint: hintedJS.hintText=\'some text\'\nDisable shadow: hintedJS.shadow = false;\nDisable hintedJS: hintedJS.enabled = false;');
 }

@@ -37,21 +37,13 @@ easyrp.online = false;
 easyrp.update = async function () {
   let promise = new Promise((resolve, reject) => {
     if(!isBrowser){
-      const madeby = 'by SimaKyr, see more in GitHub';
-      if(typeof generateInfoJSON == 'function'){
-        var url = currectWEBPAGE;
-        try{
-          url = 'youtu.be/' + new URL(currectWEBPAGE).searchParams.get('v');
-        }catch{
-
-        }
-        generateInfoJSON().then(function (e) {
-          const g = JSON.parse(e);
-          const title = '' + g.t + ' | ' + g.a;
-          return easyrp.config(title, url, madeby)
-        });
+      const madeby = 'by GooseSima, see more in GitHub';
+      if (global.info){
+        var url = page;
+        const title = '' + global.info.title + ' | ' + global.info.author;
+        return easyrp.config(title, url, madeby)
       }else{
-        return easyrp.config('Intialization...', 'URL: ???', madeby);
+        return easyrp.config('Intialization...', 'URL: ' + page, madeby);
       }
     }
   }).catch(function () {

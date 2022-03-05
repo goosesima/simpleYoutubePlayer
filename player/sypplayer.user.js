@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name SYPPlayer
 // @description Helpful script for SYP Player
-// @author SimaKyr
+// @author GooseSima
 // @license MIT
 // @version 2
 // @include https://www.youtube.com/*

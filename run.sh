@@ -1,2 +1,4 @@
 #!/bin/sh
-LIBVA_DRIVER_NAME=iHD DISPLAY=:0 ./nw & disown && kill -KILL $$
+export LD_PRELOAD=/opt/nwjs/libffmpeg.so
+# ./nw --nwapp=.
+./nw --ozone-platform-hint=auto --nwapp=.

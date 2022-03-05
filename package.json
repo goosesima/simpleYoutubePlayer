@@ -8,9 +8,12 @@
     "frame": false
   },
   "dependencies": {
+    "@ffmpeg/core": "^0.10.0",
+    "@ffmpeg/ffmpeg": "^0.10.1",
     "axios": "^0.21.1",
     "jsdom": "^16.5.3",
     "jsmediatags": "^3.9.7",
     "jszip": "^3.6.0"
-  }
+  },
+  "chromium-args": ""
 }

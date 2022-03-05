@@ -21,6 +21,7 @@
     <script src="lib/controlpad.js"></script>
     <script src="lib/alert.js"></script>
     <script src="lib/visualizer.js" charset="utf-8"></script>
+    <script src="lib/hls.js" charset="utf-8"></script>
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", function () {
         if(!isBrowser){
@@ -30,22 +31,21 @@
         }
       });
     </script>
-    <script src="lib/nwjs-ffmpeg.js"></script>
     </head>
     <body>
-
+      <script src="devtool.js"></script>
     <div id="windowBar">
       <img alt="SYP Player" src="img/sypplayer.svg" id="sypplayer">
-      <b id="windowtitle">SYP Player by SimaKyr</b>
+      <b id="windowtitle">SYP Player</b>
       <div class="windowcontrol">
         <img src="img/rollup.png" class="controlpad" id="hideBtn" alt="Hide">
         <img src="img/close.png" class="controlpad" id="closeBtn" alt="Close">
       </div>
     </div>
     <div id="loadingScreen" class="fadeSupport">
-      <div>
+      <div id="splashinfo">
         <img src="img/sypplayer.svg" alt="SYP Player">
-        <p>SYP Player by SimaKyr</p>
+        <p>SYP Player</p>
         <p id="splashinfo"></p>
       </div>
     </div>
@@ -102,6 +102,7 @@
         <audio id="futureplayer" crossorigin="anonymous">
         </audio>
     </div>
+    <div id="externalplayers"></div>
     <div id="qualityAudio" class="sA qualityMedia" style="display: none">
 
     </div>
@@ -126,8 +127,6 @@
           <p>Settings</p>
           <div id="norc">
             <p id="installSyp" class="btn controlpad" alt="Make youtube better in browser">Install userscript or open SYP Remote</p>
-            <p id="checkupdate" class="btn controlpad">Check update</p>
-            <p id="installffmpeg" class="btn controlpad">Install ffmpeg</p>
             <p id="changelogopen" class="btn controlpad">Open Change Log</p>
             <div class="layout">
               <b>Autoplay next track:</b>
@@ -160,12 +159,12 @@
             <img src="img/nwjs.png" alt="Powered with NW.JS" id="nwjsbutton" class="ads">
           </div>
           <div class="layout">
-            <b>Official Discord server:</b>
-            <img src="img/discord.png" alt="Open Discord server" id="discordbutton" class="ads">
+            <b>Matrix server:</b>
+            <img src="img/matrix.svg" alt="Open Matrix server" id="matrixbutton" class="ads">
           </div>
           <span>
-          99% made by SimaKyr.
-          SYP Player icon owned by SimaKyr.
+          Developer by GooseSima.
+          SYP Player icon owned by GooseSima.
           Icons by Icons8
           Check out package.json to know what libraries are using.
           </span>
@@ -173,7 +172,7 @@
         <p id="closeSettings" class="btn controlpad" alt="Close settings">Back</p>
     </div>
     <script src="player.js"></script>
-
+    <script src="gui.js" charset="utf-8"></script>
     </div>
     </body>
 </html>

@@ -1,11 +1,6 @@
 var fs = require('fs');
 module.exports.path = require('path');
 var sypJSON = {};
-var isNWJS = false;
-var isBrowser = true;
-if(typeof nw.App != 'undefined'){
-  isBrowser = false;
-}
 sypJSON.set = (content, name, value) => {
   var p;
   try{
@@ -26,21 +21,12 @@ sypJSON.getLength = (content) => {
     return 0;
   }
 }
-if(typeof window != 'undefined'){
-  isNWJS = true;
-}
 var storageFile;
-if(isNWJS){
-  storageFile = module.exports.path.join('player', 'userdata', 'storage.json');
-  if(isBrowser){
-    storageFile = btoa(storageFile);
-  }
-}else{
-  storageFile = module.exports.path.join('..', 'userdata', 'storage.json');
+if (localStorage) {
+  storageFile = 'storage.json';
 }
-
 module.exports.simpleReadFileSync = function(filePath){
-  if(isBrowser){
+  if(typeof localStorage == 'object'){
     return localStorage[filePath];
   }else{
     var options = {encoding:'utf-8', flag:'r'};
@@ -60,7 +46,7 @@ module.exports.checkPermission = function(e, what){
 }
 module.exports.generate = function(onend){
   try{
-    if(isBrowser){
+    if(typeof localStorage == 'object'){
       if(typeof localStorage[storageFile] == 'undefined'){
         localStorage[storageFile] = '{}';
       }
@@ -80,7 +66,7 @@ module.exports.set = function(name, value){
   }catch(e){ module.exports.checkPermission(e, 'read'); }
   try{ p = sypJSON.set(p, name, value); }catch(e){}
   try{
-    if(isBrowser){
+    if(typeof localStorage == 'object'){
       localStorage[storageFile] = p;
     }else{
       fs.writeFileSync(storageFile, p);

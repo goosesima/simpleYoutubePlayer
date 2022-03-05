@@ -2,8 +2,8 @@
 SYP Player Changelog
 ===================
 -------------------
-Join official Discord(and you ideas be real):
-https://discord.com/invite/TFSfUd9je4
+Join official Matrix:
+https://matrix.to/#/#syp:matrix.org
 -------------------
 Version 1:
 - First release.
@@ -68,40 +68,50 @@ Version 7 [24.08.2021]:
 - Maybe sypStorage support nwjs for Windows XP.
 - Fixed local files eating for Linux.
 - Replaced "location.reload()" to "chrome.runtime.reload()", because he restarts also nodejs modules.
-- Fixed possible vulnerability in "ytparser.js". Now uses interpreter to run decryption code(before it runned using "eval()").
+- Fixed vulnerability in "ytparser.js". Now uses interpreter to run decryption code(before it runned using "eval()").
 - Fixed IP detection for Linux.
 - Better userscript.
 - A bit better "run.sh" for Linux. (Edit "run.sh" to use HW acceleration on Linux).
 Version 8 [25.08.2021]:
 - Fixed decryption keys (Now every video plays).
-- Fixed missing version 7 changelog. (Forgot put new changelog file)
-- Fixed Discord RPC on Linux. (Now show up status in your Profile)
+- Fixed missing version 7 changelog. (Forgot put new changelog file).
+- Fixed Discord RPC on Linux. (Now show up status in your Profile).
+Version 9-beta [05.03.2022]:
+- Removed nwjs-ffmpeg.js.
+- Removed updates.
+- Add support for plugins.
+Known issues:
+- Not working SYP Remove.
+- 404 likes
+- No quality selection (not implemented).
+- No download.
+
 TODO:
 - Change IP to custom or userscript detect IP(?).
 - "Native" ngrok support.
 - Keyboard support.
 - Support DiscordRPC for Linux.
-- Watch anime and movies for education purporse 😲!
+- Plugin for anime and movies!
 - Different languages support.
 - Does https use gzip to compress internet packages?
 - Firebase for userdata and SYP Remote.
 - Special SYP links for open any music, (even on PC)?
 - Public and private SYP Remote mode to listen you music, when on PC listen other.
-- Make headless.
+- Headless mode.
 - ElectronJS support.
 - Commentary show.
 - WebSocket support for SYP Remote.
 - Playlist support with own format for save.
-- Share button, what copies link(WITH ADS of SYP!! Make website-redirector to YT).
+- Share button, what copies link https://sypplayer.github.io/*** .
 - Open source soundpad?
 - Chromecast support.
-- Script what install NW.JS and SYP Player.
+- Script what install NW.JS and SYP Player. (Not planned, because it being added in the future to "gsore")
 - Android application.
 - Soundcloud or bandcamp support.
-- Spotify???
+- Spotify plugin.
 - See how many views.
 - Possible make bot with 3 clicks what can listen to you great voice and play music to channel?
 - TTS and control by speaking.
 - Possible to create live music stream.
 - Mini player look.
-- Use s##### to make ###### and p#### ### to #### for ###### ???. (It's spoiler)
+- Discord bot SYP Player.
