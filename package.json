@@ -1,6 +1,6 @@
 {
   "name": "SYP",
-  "version": "8",
+  "version": "9",
   "main": "player/index.html",
   "icon": "player/img/sypplayer.png",
   "window": {
